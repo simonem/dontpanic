@@ -106,6 +106,31 @@ var ge = module.exports = function (id, client, template,template_id, id_replay)
 	console.log("Finished populating engine object.");
 }//END Engine init
     
+	
+/**
+Handles a request for gameinfo
+
+
+*/
+ge.prototype.getInfo = function(request){
+
+	if(request == "nodeid"){
+		return this.players[0].node;
+		
+	}
+	if(request == "player"){
+		rplayer = this.players[0];
+		var returnv = {
+			role : rplayer.role,
+			nodeid : rplayer.node
+			};
+		return JSON.stringify(returnv);
+	}
+	return "witty response from server";
+
+}
+
+
     
 
 

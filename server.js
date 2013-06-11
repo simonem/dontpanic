@@ -12,6 +12,7 @@ var http		= require('http'),
     games       = {},
     uuid        = require('node-uuid'),
     db			= require('./database.js');
+	net			= require('net');
 
  /* Configuration of express server:
 
@@ -88,7 +89,7 @@ http.createServer(function (req, res) {
 
 				console.log("command id: " + datainfo.command_id);
 
-				db.set_replay(datainfo.replay_id, datainfo.command_id, data.toString());
+				//db.set_replay(datainfo.replay_id, datainfo.command_id, data.toString());
 
 			}
 			if(JSON.parse(data).type == 'template'){
@@ -281,7 +282,7 @@ socket_listener.sockets.on('connection', function (client) {
         if(client.game_id){
         	var g = games[client.game_id];
 		    g.command(client, parsed);
-		    db.set_replay(g.replay_id, g.state_id, JSON.stringify(g.state()));
+		    //db.set_replay(g.replay_id, g.state_id, JSON.stringify(g.state()));
 		}
     });
 
@@ -323,4 +324,45 @@ function find_game(userid){
 	}
 	return;
 }
+var HOST = '127.0.0.1';
+var PORT = 6969;
+
+// Create a server instance, and chain the listen function to it
+// The function passed to net.createServer() becomes the event handler for the 'connection' event
+// The sock object the callback function receives UNIQUE for each connection
+net.createServer(function(sock) {
+    
+    // We have a connection - a socket object is assigned to the connection automatically
+    console.log('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
+    
+    // Add a 'data' event handler to this instance of socket
+    sock.on('data', function(data) {
+        
+        console.log('DATA ' + sock.remoteAddress + ': ' + data);
+		
+        
+		var data2;
+		
+		for(var g in games){
+			
+			data2 = games[g].getInfo(data);
+			
+			console.log(data2);
+			
+			sock.write(data2);
+			break;
+		}
+		
+		
+        
+    });
+    
+    // Add a 'close' event handler to this instance of socket
+    sock.on('close', function(data) {
+        console.log('CLOSED: ' + sock.remoteAddress +' '+ sock.remotePort);
+    });
+    
+}).listen(PORT, HOST);
+
+console.log('Server listening on ' + HOST +':'+ PORT);
 
