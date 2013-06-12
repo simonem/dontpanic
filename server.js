@@ -345,11 +345,13 @@ net.createServer(function(sock) {
 		
 		for(var g in games){
 			
+			
 			data2 = games[g].getInfo(data);
 			
 			console.log(data2);
 			
-			sock.write(data2);
+			sock.write(data2 + '\n');
+			
 			break;
 		}
 		

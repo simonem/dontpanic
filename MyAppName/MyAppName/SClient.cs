@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using Sifteo;
 using Newtonsoft.Json;
 using CubeInfoContainer;
+using GameContainer;
 
 
 
@@ -14,22 +15,26 @@ namespace CClient
 {
 	public class SClient
 	{
-		//string role;
+
+		TcpClient tcpclnt;
+		private bool ready;
+
 
 		public SClient ()
 		{
+			tcpclnt = new TcpClient();
+			Log.Debug("Connecting....");
 
+			//server ipadress
+			tcpclnt.Connect ("127.0.0.1",6969);
+
+			Log.Debug("Connected");
+			ready = true;
 
 		}
 		public string request(string msg){
 			try{
-				TcpClient tcpclnt = new TcpClient();
-				Log.Debug("Connecting....");
-
-				//server ipadress
-				tcpclnt.Connect ("127.0.0.1",6969);
-
-				Log.Debug("Connected");
+				ready = false;
 
 				Log.Debug("Sending: " + msg);
 
@@ -39,18 +44,17 @@ namespace CClient
 
 				Stream stm = tcpclnt.GetStream();
 
-
 				stm.Write(bb, 0, bb.Length);
 
-				byte[] ba = new byte[100];
-				int k = stm.Read(ba, 0, 100);
+				//int k = stm.Read(ba, 0, 100);
 				string str = "";
-				for(int i = 0; i < k ; i++){
-					str += (Convert.ToChar(ba[i]));
-				}
-				Log.Debug(str);
+				StreamReader reader = new StreamReader(stm);
 
-				tcpclnt.Close ();
+				str = reader.ReadLine();
+
+				Log.Debug(str);
+				ready = true;
+
 				return str;
 			}
 			catch(Exception e) {
@@ -59,22 +63,31 @@ namespace CClient
 			return "fail";
 		}
 
-		public string nodeidtest(){
-
-
-			string nodeid = request ("nodeid");
-
-			return nodeid;
+		public void Close(){
+			tcpclnt.Close ();
 		}
 
-		public CubeInfo Cube(){
+		public GameCont getGameInfo(){
 
-			string cubestring = request ("player");
+			string gamecontstring = request ("gameinfo");
 
-			CubeInfo cube = JsonConvert.DeserializeObject<CubeInfo> (cubestring); 
+			GameCont gamecont = JsonConvert.DeserializeObject<GameCont> (gamecontstring);
+			//GameCont gamec = JsonConvert.DeserializeAnonymousType<GameCont> (gamecontstring, new GameCont ());
+			// pritn gc
 
-			return cube;
+			//Log.Debug ( "is this right role? " + gamec.getPlayer(0).getRole());
+
+			return gamecont;
 		}
+	
+
+		public bool isReady(){
+			if (ready) {
+				return true;
+			}
+			return false;
+		}
+
 
 
 	

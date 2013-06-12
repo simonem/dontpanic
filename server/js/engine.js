@@ -118,11 +118,38 @@ ge.prototype.getInfo = function(request){
 		return this.players[0].node;
 		
 	}
-	if(request == "player"){
-		rplayer = this.players[0];
+	if(request == "gameinfo"){
+		Players = [];
+		for(var i = 0; i < this.players.length ; i++){
+			nodezones = [];
+			for( var o = 0; o < this.map.zones.length; o++){
+				if( this.map.zones[o].nodes.indexOf(this.players[i].node) > -1){
+					nodezones.push(this.map.zones[o].id);
+				}
+			}
+				
+			Players.push({
+				role : this.players[i].role,
+				nodeid : this.players[i].node,
+				zones : nodezones
+				});
+			
+		}
+		Zones = [];
+		for(var i = 0; i < this.map.zones.length; i++){
+			
+			Zones.push({
+				
+				people : this.map.zones[i].people,
+				panic : this.map.zones[i].panic_level
+				});
+
+		}
 		var returnv = {
-			role : rplayer.role,
-			nodeid : rplayer.node
+			activePlayer : this.active_player,
+			players : Players,
+			zones : Zones
+			
 			};
 		return JSON.stringify(returnv);
 	}
