@@ -6,9 +6,9 @@ namespace GameContainer
 {
 	public class GameCont
 	{
-		int activePlayer;
-		Player[] players;
-		Zone[] zones;
+		public int activePlayer;
+		public Player[] players;
+		public Zone[] zones;
 
 		public GameCont ()
 		{
@@ -23,24 +23,37 @@ namespace GameContainer
 			return activePlayer;
 		}
 		public Player getPlayer(int player){
-			if (player>=0 && player < this.players.Length) {
+			if (player>=0 && player < this.players.Length) 
+			{
 				return players [player];
 			}
 			return null;
 		}
 		public Zone getZone(int zone){
-			if (zone >=0 && zone < zones.Length) {
+			if (zone >=0 && zone < this.zones.Length)
+			{			                                            
 
 				return zones [zone];
 			}
 			return null;
 		}
+		public void print(){
+
+			Log.Debug ("activeplayer: " + this.activePlayer);
+			Log.Debug ("Players: " + this.players[0].getRole());
+			Log.Debug ("Zones: " + this.zones[0].getPeople());
+		}
+
+			           
 	}
 	public class Player
 	{
-		string role;
-		int nodeid;
-		int[] zones;
+		public string role ;
+		public int nodeid;
+		
+		public int[] zones;
+
+		
 
 
 		public Player(){
@@ -70,8 +83,8 @@ namespace GameContainer
 
 	public class Zone
 	{
-		int panic;
-		int people;
+		public int panic;
+		public int people;
 
 		public Zone()
 		{

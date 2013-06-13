@@ -19,10 +19,11 @@ namespace MyAppName
 		SClient scli;
 		GameCont gameContainer;
 		Cube[] cubes;
+		//int frame = 0;
 	
     override public int FrameRate
     {
-      get { return 20; }
+      get { return 10; }
     }
 
     // called during intitialization, before the game has started to run
@@ -52,28 +53,19 @@ namespace MyAppName
     override public void Tick()
     {
 
+
 			if (scli.isReady()) {
 				gameContainer = scli.getGameInfo ();
 
-				while(!scli.isReady()){
+				//gameContainer.print ();
 
-				for(int i = 0 ; i < 4 && i < cubes.Length; i++){ 
-					new CubeInfo ().Draw (cubes[i], i, gameContainer);
-				}
-				}
-
-			}
-			if (gameContainer != null && 1 == 2) {
-
-				// TODO : make it so you can call the cube to paint itself
-
-				// temp paint the 4 playercubes
 				for(int i = 0 ; i < 4 && i < cubes.Length; i++){ 
 					new CubeInfo ().Draw (cubes[i], i, gameContainer);
 				}
 
 
 			}
+		
 
 			foreach (Cube cube in CubeSet) {
 
@@ -93,6 +85,7 @@ namespace MyAppName
 				//}
 				//Log.Debug ("" + cube.Tilt.Length + "" + cube.Tilt[0] + "" + cube.Tilt[1] + "" + cube.Tilt[2]);
 			}
+			//frame = (frame + 1) % FrameRate;
     }
 
 		
