@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using CubeTyper;
 using GameContainer;
 
+
 namespace CubeInfoContainer
 {
 	public class CubeInfo
@@ -17,6 +18,10 @@ namespace CubeInfoContainer
 
 		public void Draw(Cube cube, int player, GameCont GC){
 
+
+
+
+			cube.ClearEvents ();
 			Typer typer = new Typer ();
 			// Draw background
 			// TODO: draw different bgcolor if cube is active player 
@@ -30,7 +35,6 @@ namespace CubeInfoContainer
 				} else {
 					cube.FillScreen (new Color(255,255,255));
 				}
-				cube.Paint ();
 				// Draw playerinfo
 
 				// Draw role
@@ -38,7 +42,7 @@ namespace CubeInfoContainer
 
 				// Draw nodeid
 				typer.printText (cube, "" + GC.getPlayer (player).getNodeid (), Cube.SCREEN_WIDTH / 4, Cube.SCREEN_HEIGHT / 2);
-				cube.Paint ();
+			
 
 
 				// Draw zones 

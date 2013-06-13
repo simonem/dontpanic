@@ -30,6 +30,7 @@ namespace GameContainer
 			return null;
 		}
 		public Zone getZone(int zone){
+			
 			if (zone >=0 && zone < this.zones.Length)
 			{			                                            
 
