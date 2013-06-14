@@ -52,11 +52,20 @@ namespace MyAppName
 
     override public void Tick()
     {
+
+
 			 
 
 			if (scli.isReady() && frame >= 20) {
 				frame = 0;
+
+
+
 				gameContainer = scli.getGameInfo ();
+
+				if(cubes[gameContainer.getActivePlayer()].ButtonIsPressed){
+					scli.move(gameContainer.getActivePlayer(), 2);
+				}
 
 				//gameContainer.print ();
 
@@ -66,32 +75,41 @@ namespace MyAppName
 
 
 			}
-		
+			/*/
 
 			foreach (Cube cube in CubeSet) {
 
+				cube.ClearEvents ();
+				cube.FillScreen (new Color(255,255,255));
+				typer.printText (cube, "" + cube.Tilt [0] + " " + cube.Tilt [1], 20, 20);
+				cube.Paint ();
 
-				/*
+
+
+
 				if(cube.ButtonIsPressed){
 
 					//CubeInfo cube1 = scli.Cube ();
 
 
 
-					typer.printText (cube, "cm", 20, 20);
+					//typer.printText (cube, "cm", 20, 10);
+					//typer.printText (cube, "d", 20, 50);
+
+					//typer.printText (cube, "oe f", 20, 90);
 					//typer.printText (cube, "driver", 20, 40);
 					//typer.printText (cube, "operations expert", 20, 60);
 
-					cube.Paint ();
+					//cube.Paint ();
 
 
 					//cube1.Draw (cube);
 
 		
 
-				}*/
+				}
 				//Log.Debug ("" + cube.Tilt.Length + "" + cube.Tilt[0] + "" + cube.Tilt[1] + "" + cube.Tilt[2]);
-			}
+			}/*/
 			frame++;
 
 

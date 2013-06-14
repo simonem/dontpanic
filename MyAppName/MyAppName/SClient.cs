@@ -79,6 +79,20 @@ namespace CClient
 
 			return gamecont;
 		}
+
+		public bool move(int player, int node){
+			string msg = "{ \"command\": \"move_player\", ";
+			msg = msg + "\"player_id\": " + player + ", ";
+			msg = msg + "\"node\": " + node + " }";
+
+			request (msg);
+
+			// { "command": "thecommand" 
+			// { "move": (int)node }
+
+			return false;
+
+		}
 	
 
 		public bool isReady(){

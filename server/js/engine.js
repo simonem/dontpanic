@@ -127,9 +127,23 @@ ge.prototype.getInfo = function(request){
 					nodezones.push(this.map.zones[o].id);
 				}
 			}
+			roleret = "";
+			switch (this.players[i].role){
+				case 'crowd manager':
+					roleret = "cm";
+					break;
+				case 'driver':
+					roleret = "d";
+					break;
+				case 'operation expert':
+					roleret = "oe";
+					break;
+			}
 				
+					
+			
 			Players.push({
-				role : this.players[i].role,
+				role : roleret,
 				nodeid : this.players[i].node,
 				zones : nodezones
 				});
@@ -153,6 +167,27 @@ ge.prototype.getInfo = function(request){
 			};
 		return JSON.stringify(returnv);
 	}
+	if(JSON.parse(request).command){
+		
+		infoobj = JSON.parse(request);
+		
+		
+		commando = {
+			type : infoobj.command,
+			player_id : infoobj.player_id,
+			node_id : infoobj.node,
+			zone_id : infoobj.zone,
+			selected_zone : infoobj.szone,
+			zone_from : infoobj.fzone,
+			zone_to : infoobj.tzone,
+			selected_node : infoobj.snode
+		}
+		this.command(this.clients[0], commando);
+		
+		return "success " + JSON.parse(request).command;
+	}
+	
+	
 	return "witty response from server";
 
 }
@@ -192,7 +227,7 @@ ge.prototype.command = function(client, c){
         case 'move_player':
             if (c.player_id === this.active_player) {
                 var p = players[c.player_id];
-		    	if(p.move_player(this,nodes[p.node], nodes[c.node_id])){changed.players = [p];}
+		    	if(p.move_player(this, nodes[p.node], nodes[c.node_id])){changed.players = [p];}
             }
             //must send player object even if not moved, to paint it correctly, apparently
             changed.players = [p];

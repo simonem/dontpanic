@@ -11,19 +11,27 @@ namespace CubeTyper
 
 		}
 	
-
-
 		public void printText(Cube cube, String text, int x, int y){
 			int offset = 0;
 			foreach(char c in text.ToLower().ToCharArray()){
-				offset = offset + printChar(cube, c, x+offset, y);
+				offset = offset + printChar(new Color(0,0,0), cube, c, x+offset, y);
+
+
+			}
+		}
+
+		public void printText(Color chr_clr, Cube cube, String text, int x, int y){
+			int offset = 0;
+			foreach(char c in text.ToLower().ToCharArray()){
+				offset = offset + printChar(chr_clr, cube, c, x+offset, y);
+
 
 			}
 		}
 		// draws a char to on the cube 
 		// returns an int to tell how wide the char is
-		public int printChar(Cube cube, char d, int cX, int cY){
-			Color chr_clr = new Color (0, 0, 0);
+		public int printChar( Color chr_clr, Cube cube, char d, int cX, int cY){
+
 
 			switch (d) {
 			case 'a':
@@ -46,33 +54,37 @@ namespace CubeTyper
 
 			case 'c':
 
-				cube.FillRect (chr_clr, cX + 0, cY + 5, 1, 9);
-				cube.FillRect (chr_clr, cX + 1, cY + 4, 1, 11);
-				cube.FillRect (chr_clr, cX + 2, cY + 3, 1, 13);
-				cube.FillRect (chr_clr, cX + 3, cY + 3, 8, 3);
-				cube.FillRect (chr_clr, cX + 3, cY + 13, 8, 3);
+				cube.FillRect (chr_clr, cX + 0, cY + 0, 5, 30);
+				cube.FillRect (chr_clr, cX + 5, cY + 0, 20, 5);
+				cube.FillRect (chr_clr, cX + 5, cY + 25, 20, 5);
 	
-				return 12;
+				return 26;
 			case 'd':
 
-				cube.FillRect (chr_clr, cX + 3, cY + 1, 1, 7);
-				cube.FillRect (chr_clr, cX + 1, cY + 4, 2, 1);
-				cube.FillRect (chr_clr, cX + 0, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 8, 2, 1);
+				cube.FillRect (chr_clr, cX + 0, cY + 0, 5, 30);
+				cube.FillRect (chr_clr, cX + 5, cY + 0, 12, 5);
+				cube.FillRect (chr_clr, cX + 5, cY + 25, 12, 5);
+				cube.FillRect (chr_clr, cX + 15, cY + 2, 5, 5);
+				cube.FillRect (chr_clr, cX + 15, cY + 23, 5, 5);
+				cube.FillRect (chr_clr, cX + 17, cY + 5, 6, 7);
+				cube.FillRect (chr_clr, cX + 17, cY + 18, 6, 7);
+				cube.FillRect (chr_clr, cX + 19, cY + 11, 6, 8);
 
 
-				return 5;
+				return 26;
 			case 'e':
 
-				cube.FillRect (chr_clr, cX + 1, cY + 4, 2, 1);
-				cube.FillRect (chr_clr, cX + 0, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 3, cY + 5, 1, 1);
-				cube.FillRect (chr_clr, cX + 1, cY + 6, 2, 1);
-				cube.FillRect (chr_clr, cX + 1, cY + 8, 3, 1);
+				cube.FillRect (chr_clr, cX + 0, cY + 0, 5, 30);
+				cube.FillRect (chr_clr, cX + 5, cY + 0, 18, 5);
+
+				cube.FillRect (chr_clr, cX + 5, cY + 13, 8, 4);
+
+				cube.FillRect (chr_clr, cX + 5, cY + 25, 18, 5);
+			
 
 	
 	
-				return 5;
+				return 24;
 			case 'f':
 
 				cube.FillRect (chr_clr, cX + 0, cY + 3, 1, 1);
@@ -235,21 +247,21 @@ namespace CubeTyper
 
 			case 'm':
 
-				cube.FillRect (chr_clr, cX + 0, cY + 3, 3, 13);
-				cube.FillRect (chr_clr, cX + 3, cY + 4, 1, 4);
-				cube.FillRect (chr_clr, cX + 4, cY + 5, 1, 4);
-				cube.FillRect (chr_clr, cX + 5, cY + 6, 1, 4);
-				cube.FillRect (chr_clr, cX + 6, cY + 7, 1, 4);
-				cube.FillRect (chr_clr, cX + 7, cY + 8, 1, 4);
-				cube.FillRect (chr_clr, cX + 8, cY + 7, 1, 4);
-				cube.FillRect (chr_clr, cX + 9, cY + 6, 1, 4);
-				cube.FillRect (chr_clr, cX + 10, cY + 5, 1, 4);
-				cube.FillRect (chr_clr, cX + 11, cY + 4, 1, 4);
-				cube.FillRect (chr_clr, cX + 12, cY + 3, 3, 13);
+				cube.FillRect (chr_clr, cX + 0, cY + 0, 5, 30);
+				cube.FillRect (chr_clr, cX + 5, cY + 2, 4, 7);
+				cube.FillRect (chr_clr, cX + 9, cY + 5, 4, 7);
+
+				cube.FillRect (chr_clr, cX + 12, cY + 8, 6, 7);
+
+				cube.FillRect (chr_clr, cX + 13, cY + 15, 4, 3);
+
+				cube.FillRect (chr_clr, cX + 17, cY + 5, 4, 7);
+				cube.FillRect (chr_clr, cX + 21, cY + 2, 4, 7);
+				cube.FillRect (chr_clr, cX + 25, cY + 0, 5, 30);
 			
 	
 
-				return 15;
+				return 31;
 			case 'n':
 
 				cube.FillRect (chr_clr, cX + 0, cY + 3, 1, 6);
@@ -260,14 +272,23 @@ namespace CubeTyper
 			case 'o':
 
 
-				cube.FillRect (chr_clr, cX + 1, cY + 4, 2, 1);
-				cube.FillRect (chr_clr, cX + 0, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 3, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 8, 2, 1);
-			
+				cube.FillRect (chr_clr, cX + 0, cY + 11, 6, 8);
+				cube.FillRect (chr_clr, cX + 2, cY + 5, 6, 7);
+				cube.FillRect (chr_clr, cX + 2, cY + 18, 6, 7);
+				cube.FillRect (chr_clr, cX + 5, cY + 2, 5, 5);
+				cube.FillRect (chr_clr, cX + 5, cY + 23, 5, 5);
+				cube.FillRect (chr_clr, cX + 8, cY + 0, 9, 5);
+				cube.FillRect (chr_clr, cX + 8, cY + 25, 9, 5);
+				cube.FillRect (chr_clr, cX + 15, cY + 2, 5, 5);
+				cube.FillRect (chr_clr, cX + 15, cY + 23, 5, 5);
+				cube.FillRect (chr_clr, cX + 17, cY + 5, 6, 7);
+				cube.FillRect (chr_clr, cX + 17, cY + 18, 6, 7);
+				cube.FillRect (chr_clr, cX + 19, cY + 11, 6, 8);
+
+				
+
 		
-		
-				return 5;
+				return 26;
 			case 'p':
 
 				cube.FillRect (chr_clr, cX + 0, cY + 5, 1, 6);
@@ -448,98 +469,98 @@ namespace CubeTyper
 				return 8;
 
 			case '0':
-				cube.FillRect (chr_clr, cX + 1, cY + 0, 3, 1);
-				cube.FillRect (chr_clr, cX + 0, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 4, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 0, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 4, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 8, 3, 1);
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
+				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4); // 2
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4); // 6
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
 
-				return 6;
+				return 9;
 
 			case '1':
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
+				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4); // 2
 
-				cube.FillRect (chr_clr, cX + 0, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 0, cY + 5, 1, 3);
-
-
-				return 2;
+				return 3;
 
 			case '2':
 
-				cube.FillRect (chr_clr, cX + 1, cY + 0, 3, 1);
-				cube.FillRect (chr_clr, cX + 4, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 4, 3, 1);
-				cube.FillRect (chr_clr, cX + 0, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 8, 3, 1);
 
+				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4); // 2
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4); // 6
 			
-				return 6;
+				return 9;
 
 			case '3':
 			
 
-				cube.FillRect (chr_clr, cX + 0, cY + 0, 3, 1);
-				cube.FillRect (chr_clr, cX + 3, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 0, cY + 4, 3, 1);
-				cube.FillRect (chr_clr, cX + 3, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 0, cY + 8, 3, 1);
 
-				return 6;
+				cube.FillRect (chr_clr, cX + 0, cY + 0, 4, 2); // 3
+				cube.FillRect (chr_clr, cX + 0, cY + 6, 4, 2); // 4 
+				cube.FillRect (chr_clr, cX + 0, cY + 12, 4, 2); // 5
+				cube.FillRect (chr_clr, cX + 4, cY + 2, 2, 4); // 6
+				cube.FillRect (chr_clr, cX + 4, cY + 8, 2, 4); // 7
+
+				return 7;
 
 			case '4':
 
-				cube.FillRect (chr_clr, cX + 0, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 4, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 4, 3, 1);
-				cube.FillRect (chr_clr, cX + 4, cY + 5, 1, 3);
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4); // 6
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
 
-				return 6;
+				return 9;
 			case '5':
 
-				cube.FillRect (chr_clr, cX + 1, cY + 0, 3, 1);
-				cube.FillRect (chr_clr, cX + 0, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 4, 3, 1);
-				cube.FillRect (chr_clr, cX + 4, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 8, 3, 1);
-
-				return 6;
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
+				return 9;
 			case '6':
 
-				cube.FillRect (chr_clr, cX + 0, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 4, 3, 1);
-				cube.FillRect (chr_clr, cX + 0, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 4, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 8, 3, 1);
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
+				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4); // 2
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
 
-				return 6;
+				return 9;
 			case '7':
 
-				cube.FillRect (chr_clr, cX + 0, cY + 0, 3, 1);
-				cube.FillRect (chr_clr, cX + 3, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 3, cY + 5, 1, 3);
+				cube.FillRect (chr_clr, cX + 0, cY + 0, 4, 2); // 3
+				cube.FillRect (chr_clr, cX + 4, cY + 2, 2, 4); // 6
+				cube.FillRect (chr_clr, cX + 4, cY + 8, 2, 4); // 7
 		
-				return 5;
+				return 7;
 			case '8':
 
-				cube.FillRect (chr_clr, cX + 1, cY + 0, 3, 1);
-				cube.FillRect (chr_clr, cX + 0, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 4, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 4, 3, 1);
-				cube.FillRect (chr_clr, cX + 0, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 4, cY + 5, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 8, 3, 1);
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
+				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4); // 2
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4); // 6
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
 
-				return 6;
+				return 9;
 			case '9':
 
-				cube.FillRect (chr_clr, cX + 1, cY + 0, 3, 1);
-				cube.FillRect (chr_clr, cX + 0, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 4, cY + 1, 1, 3);
-				cube.FillRect (chr_clr, cX + 1, cY + 4, 3, 1);
-				cube.FillRect (chr_clr, cX + 4, cY + 5, 1, 3);
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4); // 6
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
 
-				return 6;
+				return 9;
 			
 			}
 			return 5;

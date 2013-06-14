@@ -53,9 +53,19 @@ namespace CubeInfoContainer
 						if (zone == -1) {
 							break;
 						} else {
-							typer.printText (cube, "" + GC.getZone (zone).getPeople (), 0 + i * (Cube.SCREEN_WIDTH - 20), 0 + o * (3 * Cube.SCREEN_HEIGHT / 4));
 
-							typer.printText (cube, "" + GC.getZone (zone).getPanic (), 0 + i * (Cube.SCREEN_WIDTH - 20), 12 + o * (3 * Cube.SCREEN_HEIGHT / 4));
+							int R = (int)(255 * ((double)GC.getZone(zone).getPanic() / (double)50));
+							Log.Debug ("" + (int)(200 * ((double)GC.getZone(zone).getPanic() / 50)));
+							int G = 0;
+							int B = 0;
+							Color zonecolor = new Color (R, G, B);
+							Color invzonecolor = new Color (255 - R, 255 - G, 255 - B);
+
+
+							cube.FillRect (zonecolor, 0 + i * (Cube.SCREEN_WIDTH - 20), 0 + o * (3 * Cube.SCREEN_HEIGHT / 4), Cube.SCREEN_WIDTH / 4, Cube.SCREEN_HEIGHT / 4);
+							typer.printText (invzonecolor, cube,  "" + GC.getZone (zone).getPeople (), 0 + i * (Cube.SCREEN_WIDTH - 20), 0 + o * (3 * Cube.SCREEN_HEIGHT / 4));
+
+							typer.printText (invzonecolor, cube, "" + GC.getZone (zone).getPanic (), 0 + i * (Cube.SCREEN_WIDTH - 20), 12 + o * (3 * Cube.SCREEN_HEIGHT / 4));
 						}
 
 					}
