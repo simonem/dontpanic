@@ -45,6 +45,7 @@ namespace Dontpanic
 			Log.Debug ("Zones: " + this.zones[0].getPeople());
 		}
 
+
 			           
 	}
 	public class Player

@@ -41,45 +41,34 @@ namespace Dontpanic
 			switch (c){
 
 			case '0':
-
-			return 9;
+				return 13;
 
 			case '1':
-
-
-			return 3;
+				return 4;
 
 			case '2':
-
-			return 9;
+				return 13;
 
 			case '3':
-
-			return 7;
+				return 10;
 
 			case '4':
+				return 13;
 
-			return 9;
 			case '5':
+				return 13;
 
-			return 9;
 			case '6':
+				return 13;
 
-
-
-			return 9;
 			case '7':
+				return 10;
 
-
-
-			return 7;
 			case '8':
+				return 13;
 
-
-			return 9;
 			case '9':
-
-			return 9;
+				return 13;
 
 			}
 		return 30;
@@ -526,104 +515,94 @@ namespace Dontpanic
 				return 8;
 
 			case '0':
-				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
-				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4); // 2
-				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
-				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
-				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4); // 6
-				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
+				cube.FillRect (chr_clr, cX + 0, cY + 10, 3, 6); // 1
+				cube.FillRect (chr_clr, cX + 0, cY + 19, 3, 6); // 2
+				cube.FillRect (chr_clr, cX + 3, cY + 7, 6, 3); // 3
+				cube.FillRect (chr_clr, cX + 3, cY + 25, 6, 3); // 5
+				cube.FillRect (chr_clr, cX + 9, cY + 10, 3, 6); // 6
+				cube.FillRect (chr_clr, cX + 9, cY + 19, 3, 6); // 7
 
-				return 9;
+				return 13;
 
 			case '1':
-				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
-				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4); // 2
+				cube.FillRect (chr_clr, cX + 0, cY + 10, 3, 6); // 1
+				cube.FillRect (chr_clr, cX + 0, cY + 19, 3, 6); // 2
 
-				return 3;
+				return 4;
 
 			case '2':
 
 
-				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4); // 2
-				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
-				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
-				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
-				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4); // 6
+				cube.FillRect (chr_clr, cX + 0, cY + 19, 3, 6); // 2
+				cube.FillRect (chr_clr, cX + 3, cY + 7, 6, 3); // 3
+				cube.FillRect (chr_clr, cX + 3, cY + 16, 6, 3); // 4 
+				cube.FillRect (chr_clr, cX + 3, cY + 25, 6, 3); // 5
+				cube.FillRect (chr_clr, cX + 9, cY + 10, 3, 6); // 6
 			
-				return 9;
+				return 13;
 
 			case '3':
 			
 
-
-				cube.FillRect (chr_clr, cX + 0, cY + 0, 4, 2); // 3
-				cube.FillRect (chr_clr, cX + 0, cY + 6, 4, 2); // 4 
-				cube.FillRect (chr_clr, cX + 0, cY + 12, 4, 2); // 5
-				cube.FillRect (chr_clr, cX + 4, cY + 2, 2, 4); // 6
-				cube.FillRect (chr_clr, cX + 4, cY + 8, 2, 4); // 7
-
-				return 7;
+				cube.FillRect (chr_clr, cX + 0, cY + 7, 6, 3); // 3
+				cube.FillRect (chr_clr, cX + 0, cY + 16, 6, 3); // 4 
+				cube.FillRect (chr_clr, cX + 0, cY + 25, 6, 3); // 5
+				cube.FillRect (chr_clr, cX + 6, cY + 10, 3, 6); // 6
+				cube.FillRect (chr_clr, cX + 6, cY + 19, 3, 6); // 7
+				return 10;
 
 			case '4':
+				cube.FillRect (chr_clr, cX + 0, cY + 10, 3, 6); // 1
+				cube.FillRect (chr_clr, cX + 3, cY + 16, 6, 3); // 4 
+				cube.FillRect (chr_clr, cX + 9, cY + 10, 3, 6); // 6
+				cube.FillRect (chr_clr, cX + 9, cY + 19, 3, 6); // 7
 
-				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
-				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
-				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4); // 6
-				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
-
-				return 9;
+				return 13;
 			case '5':
-
-				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
-				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
-				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
-				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
-				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
-				return 9;
+				cube.FillRect (chr_clr, cX + 0, cY + 10, 3, 6); // 1
+				cube.FillRect (chr_clr, cX + 3, cY + 7, 6, 3); // 3
+				cube.FillRect (chr_clr, cX + 3, cY + 16, 6, 3); // 4 
+				cube.FillRect (chr_clr, cX + 3, cY + 25, 6, 3); // 5
+				cube.FillRect (chr_clr, cX + 9, cY + 19, 3, 6); // 7
+				return 13;
 			case '6':
+				cube.FillRect (chr_clr, cX + 0, cY + 10, 3, 6); // 1
+				cube.FillRect (chr_clr, cX + 0, cY + 19, 3, 6); // 2
+				cube.FillRect (chr_clr, cX + 3, cY + 7, 6, 3); // 3
+				cube.FillRect (chr_clr, cX + 3, cY + 16, 6, 3); // 4 
+				cube.FillRect (chr_clr, cX + 3, cY + 25, 6, 3); // 5
+				cube.FillRect (chr_clr, cX + 9, cY + 19, 3, 6); // 7
 
-				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
-				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4); // 2
-				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
-				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
-				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
-				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
-
-				return 9;
+				return 13;
 			case '7':
-
-				cube.FillRect (chr_clr, cX + 0, cY + 0, 4, 2); // 3
-				cube.FillRect (chr_clr, cX + 4, cY + 2, 2, 4); // 6
-				cube.FillRect (chr_clr, cX + 4, cY + 8, 2, 4); // 7
-		
-				return 7;
+				cube.FillRect (chr_clr, cX + 0, cY + 7, 6, 3); // 3
+				cube.FillRect (chr_clr, cX + 6, cY + 10, 3, 6); // 6
+				cube.FillRect (chr_clr, cX + 6, cY + 19, 3, 6); // 7
+				return 10;
 			case '8':
+				cube.FillRect (chr_clr, cX + 0, cY + 10, 3, 6); // 1
+				cube.FillRect (chr_clr, cX + 0, cY + 19, 3, 6); // 2
+				cube.FillRect (chr_clr, cX + 3, cY + 7, 6, 3); // 3
+				cube.FillRect (chr_clr, cX + 3, cY + 16, 6, 3); // 4 
+				cube.FillRect (chr_clr, cX + 3, cY + 25, 6, 3); // 5
+				cube.FillRect (chr_clr, cX + 9, cY + 10, 3, 6); // 6
+				cube.FillRect (chr_clr, cX + 9, cY + 19, 3, 6); // 7
 
-				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
-				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4); // 2
-				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
-				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
-				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
-				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4); // 6
-				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
-
-				return 9;
+				return 13;
 			case '9':
+				cube.FillRect (chr_clr, cX + 0, cY + 10, 3, 6); // 1
+				cube.FillRect (chr_clr, cX + 3, cY + 7, 6, 3); // 3
+				cube.FillRect (chr_clr, cX + 3, cY + 16, 6, 3); // 4 
+				cube.FillRect (chr_clr, cX + 9, cY + 10, 3, 6); // 6
+				cube.FillRect (chr_clr, cX + 9, cY + 19, 3, 6); // 7
 
-				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); // 1
-				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2); // 3
-				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
-				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2); // 5
-				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4); // 6
-				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
-
-				return 9;
+				return 13;
 
 			case '-':
 
-				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
+				cube.FillRect (chr_clr, cX + 2, cY + 16, 6, 3); // 4 
 
-				return 5;
+				return 10;
 			
 			}
 

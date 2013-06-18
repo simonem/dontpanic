@@ -7,27 +7,46 @@ namespace Dontpanic
 {
 	public class CubeInfo
 	{
-
+		
+		public int fzone = -1;
+		public int amount = 0;
+		public int onTheMove = 0;
 
 		public CubeInfo()
 		{
 
 		}
 
-		public void drawZone(Cube cube, Zone zone, int x, int y){
+		public void drawZone(Cube cube, Zone zone, int x, int y, int zoneid){
 			Typer typer = new Typer ();
+			Color zonecolor = new Color (0, 0, 0);
+			Color invzonecolor = new Color (255 , 255, 255);
+			double panicpercent =  (double)zone.getPanic()/(double)50;
+			if (panicpercent >= (double)0.75) {
 
-			int R = (int)(255 * ((double)zone.getPanic() / (double)50));
-			int G = 0;
-			int B = 0;
-			Color zonecolor = new Color (R, G, B);
-			Color invzonecolor = new Color (255 - R, 255 - G, 255 - B);
+
+			} else if (panicpercent >= (double)0.5) {
+				zonecolor = new Color (255, 0, 0);
+				invzonecolor = new Color (0, 255, 255);
+			}
+			else if (panicpercent >= (double)0.25){
+				zonecolor =  new Color(255,255,0);
+				invzonecolor = new Color (0, 0, 255);
+			}
+			else {
+				zonecolor = new Color (0, 255, 0);
+				invzonecolor = new Color (255, 0, 255);
+			}
+
 
 			cube.FillRect (zonecolor,  (x*Cube.SCREEN_WIDTH  /4), (y * Cube.SCREEN_HEIGHT / 4), Cube.SCREEN_WIDTH / 4, Cube.SCREEN_HEIGHT / 4);
+			if(zoneid == fzone){
 
-			typer.printText (invzonecolor, cube, "" + zone.getPeople(), (x * Cube.SCREEN_WIDTH  /4) + (Cube.SCREEN_WIDTH/8 - typer.getIntLength( "" + zone.getPeople())/2),  (y * Cube.SCREEN_HEIGHT / 4));
-
-			typer.printText (invzonecolor, cube, "" + zone.getPanic(), (x * Cube.SCREEN_WIDTH /4)  + (Cube.SCREEN_WIDTH/8 - typer.getIntLength( "" + zone.getPanic())/2), 15 +  (y * Cube.SCREEN_HEIGHT / 4));
+				typer.printText (invzonecolor, cube, "" + (zone.getPeople() - onTheMove), (x * Cube.SCREEN_WIDTH  /4) + (Cube.SCREEN_WIDTH/8 - typer.getIntLength( "" + zone.getPeople())/2),  (y * Cube.SCREEN_HEIGHT / 4));
+			}
+			else{
+				typer.printText (invzonecolor, cube, "" + zone.getPeople(), (x * Cube.SCREEN_WIDTH  /4) + (Cube.SCREEN_WIDTH/8 - typer.getIntLength( "" + zone.getPeople())/2),  (y * Cube.SCREEN_HEIGHT / 4));
+			}
 
 
 		}
@@ -46,7 +65,7 @@ namespace Dontpanic
 
 			
 				if (player == GC.getActivePlayer ()) {
-					cube.FillScreen (new Color(255, 0,0));
+					cube.FillScreen (new Color(100, 100,100));
 				} else {
 					cube.FillScreen (new Color(255,255,255));
 				}
@@ -92,54 +111,54 @@ namespace Dontpanic
 
 				case 0:
 
-					drawZone (cube, GC.getZone (0), 2, 0);
-					drawZone (cube, GC.getZone (6), 3, 1);
+					drawZone (cube, GC.getZone (0), 2, 0, 0);
+					drawZone (cube, GC.getZone (6), 3, 1, 6);
 					break;
 
 				case 1:
-					drawZone (cube, GC.getZone (0), 3, 3);
-					drawZone (cube, GC.getZone (1), 3, 1);
+					drawZone (cube, GC.getZone (0), 3, 3, 0);
+					drawZone (cube, GC.getZone (1), 3, 1, 1);
 					break;
 				case 2:
-					drawZone (cube, GC.getZone (0), 0, 2);
-					drawZone (cube, GC.getZone (1), 0, 0);
-					drawZone (cube, GC.getZone (2), 3, 1);
-					drawZone (cube, GC.getZone (6), 1, 3);
+					drawZone (cube, GC.getZone (0), 0, 2, 0);
+					drawZone (cube, GC.getZone (1), 0, 0, 1);
+					drawZone (cube, GC.getZone (2), 3, 1, 2);
+					drawZone (cube, GC.getZone (6), 1, 3, 6);
 
 					break;
 
 				case 3:
-					drawZone (cube, GC.getZone (1), 0, 3);
-					drawZone (cube, GC.getZone (2), 2, 3);
-					drawZone (cube, GC.getZone (3), 3, 2);
+					drawZone (cube, GC.getZone (1), 0, 3, 1);
+					drawZone (cube, GC.getZone (2), 2, 3, 2);
+					drawZone (cube, GC.getZone (3), 3, 2, 3);
 
 					break;
 				
 				case 4:
-					drawZone (cube, GC.getZone (4), 0, 2);
+					drawZone (cube, GC.getZone (4), 0, 2, 4);
 
 					break;
 				case 5:
-					drawZone (cube, GC.getZone (4), 1, 0);
-					drawZone (cube, GC.getZone (5), 0, 1);
+					drawZone (cube, GC.getZone (4), 1, 0, 4);
+					drawZone (cube, GC.getZone (5), 0, 1, 5);
 					break;
 
 				case 6: 
-					drawZone (cube, GC.getZone (2), 0, 1);
-					drawZone (cube, GC.getZone (3), 1, 0);
-					drawZone (cube, GC.getZone (4), 3, 1);
-					drawZone (cube, GC.getZone (5), 2, 3);
+					drawZone (cube, GC.getZone (2), 0, 1, 2);
+					drawZone (cube, GC.getZone (3), 1, 0, 3);
+					drawZone (cube, GC.getZone (4), 3, 1, 4);
+					drawZone (cube, GC.getZone (5), 2, 3, 5);
 					break;
 
 				case 7:
-					drawZone (cube, GC.getZone (2), 1, 0);
-					drawZone (cube, GC.getZone (5), 3, 1);
-					drawZone (cube, GC.getZone (6), 0, 0);
+					drawZone (cube, GC.getZone (2), 1, 0, 2);
+					drawZone (cube, GC.getZone (5), 3, 1, 5);
+					drawZone (cube, GC.getZone (6), 0, 0, 6);
 					break;
 
 				case 8:
-					drawZone (cube, GC.getZone (3), 0, 3);
-					drawZone (cube, GC.getZone (4), 2, 3);
+					drawZone (cube, GC.getZone (3), 0, 3, 3);
+					drawZone (cube, GC.getZone (4), 2, 3, 4);
 
 					break;
 

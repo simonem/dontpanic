@@ -16,11 +16,9 @@ namespace Dontpanic
 		SClient scli;
 		GameCont gameContainer;
 		Cube[] cubes;
+		CubeInfo cubeHandler = new CubeInfo();
 		int frame = 20;
-		Sound mymusic;
 
-		int fzone = -1;
-		int amount = 0;
 	
     override public int FrameRate
     {
@@ -57,12 +55,9 @@ namespace Dontpanic
 
 
 	
-
+		// TODO : create a buttonpressed event for each of the playercubes.
     override public void Tick()
     {
-
-
-			 
 
 			if (scli.isReady() && frame >= 20) {
 				frame = 0;
@@ -80,7 +75,7 @@ namespace Dontpanic
 				//gameContainer.print ();
 
 				for(int i = 0 ; i < 4 && i < cubes.Length; i++){ 
-					new CubeInfo ().Draw (cubes[i], i, gameContainer);
+					cubeHandler.Draw (cubes[i], i, gameContainer);
 				}
 
 
@@ -277,22 +272,23 @@ namespace Dontpanic
 				int zone = FindZone (gameContainer.getPlayer(player).getNodeid(), side2);
 
 			
-				if (zone == fzone || fzone == -1) {
+				if (zone == cubeHandler.fzone || cubeHandler.fzone == -1) {
 
 					int eachmove = 5;
 					if (gameContainer.getPlayer (player).getRole () == "d") {
 						eachmove = 10;
 					}
 
-					if (!(gameContainer.getZone (zone).getPeople() - (eachmove * amount) <= 0)) {
+					if (!(gameContainer.getZone (zone).getPeople() - (eachmove * cubeHandler.amount) <= 0)) {
 
-						amount ++;
-						fzone = zone;
+						cubeHandler.amount ++;
+						cubeHandler.fzone = zone;
+						cubeHandler.onTheMove = (eachmove * cubeHandler.amount);
 
 
 						cube1.FillScreen(new Color(100,100,0));
 						typer.printText (cube1, "" + zone, 20, 20);
-						typer.printText (cube1, "" + (eachmove * amount), 20, 40);
+						typer.printText (cube1, "" + (eachmove * cubeHandler.amount), 20, 40);
 						cube1.Paint ();
 					}
 
@@ -302,12 +298,12 @@ namespace Dontpanic
 
 				} else {
 
-					for (int i = 0; i < amount; i++) {
-						scli.movePeople (fzone, zone);
+					for (int i = 0; i < cubeHandler.amount; i++) {
+						scli.movePeople (cubeHandler.fzone, zone);
 
 					}
-					amount = 0;
-					fzone = -1;
+					cubeHandler.amount = 0;
+					cubeHandler.fzone = -1;
 					cube1.FillScreen(new Color(100,100,0));
 					cube1.Paint ();
 				}
