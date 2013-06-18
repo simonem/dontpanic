@@ -1283,8 +1283,8 @@ ge.Zone = function (z) {
 */
 ge.Zone.prototype.update_panic = function (g,panic_level) {
 	this.panic_level += panic_level;		
-	if (this.panic_level >= 50) {
-		this.panic_level = 50;
+	if (this.panic_level >= this.people) {
+		this.panic_level = this.people;
 	} 
 	else if (this.panic_level < 0) {
 		this.panic_level = 0;
@@ -1337,7 +1337,7 @@ ge.Zone.prototype.dec_panic = function(g,player, node) {
 ge.Zone.prototype.can_dec_panic = function(g,player, node) {
 	console.log("Can decrease panic?");
 	if (this.nodes.indexOf(node.id) >= 0) {
-		if(this.panic_level >= 5){
+		if(this.panic_level >= 1){
 
 			if(player.can_update_actions(g,-1)){
 				console.log("True");
@@ -1364,7 +1364,7 @@ ge.Zone.prototype.can_dec_panic = function(g,player, node) {
 */
 ge.Zone.prototype.move_people = function (g, p, to_zone, num) {
 	var peopleMoved = this.can_move_people(g,p, to_zone, num);
-	if(peopleMoved==5||peopleMoved==10){
+	if(peopleMoved>= 1){
 		this.people -= peopleMoved;
 		to_zone.people += peopleMoved;
 		p.update_actions(g,-1);
@@ -1383,14 +1383,17 @@ ge.Zone.prototype.move_people = function (g, p, to_zone, num) {
 ge.Zone.prototype.can_move_people = function (g, p, to_zone, num) {
 	console.log("Can move people?");
 	//if driver wants to move 5, but there is only 5, change driver's move-variable to 5
-	if (this.people==5)
-		num=5;
-	if (this.people >= num){
+	
+	if (this.people - this.panic_level >= 1){
 		//player can only move to adjacent zones
 		if(this.adjacent_zones.indexOf(to_zone.id)>=0 ){
 			if(p.can_update_actions(g,-1)) {
 				console.log("True");
-				return num;
+				if(num >= (this.people - this.panic_level)){
+					return num;
+				}else {
+					return (this.people - this.panic_level);
+				}
 			}
 
 		}
@@ -1411,9 +1414,8 @@ ge.Zone.prototype.can_move_people = function (g, p, to_zone, num) {
 * @param {Integer} num Number of people to move
 */
 ge.Zone.prototype.can_move_people_from = function (g, p, num){
-	if (this.people==5)
-		num=5;
-	if (this.people >= num){
+	
+	if (this.people - this.panic_level >= 1){
 		if(this.nodes.indexOf(p.node)>=0 ){
 			if(p.can_update_actions(g,-1)) {
 				console.log("True");
