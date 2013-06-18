@@ -241,7 +241,15 @@ namespace Dontpanic
 
 
 				int zone = FindZone (gameContainer.getPlayer(player).getNodeid(), side2);
+				cube1.FillScreen(new Color(255,100,100));
+				int removed = 5;
+				if (gameContainer.getPlayer (player).getRole () == "cm") {
+					removed = 10;
+				}
+
+				typer.printText (cube1, gameContainer.getZone(zone).getPanic() + " -" + removed, 20, 20);
 				scli.decpanic (zone);
+				cube1.Paint ();
 
 
 			}
@@ -251,7 +259,6 @@ namespace Dontpanic
 
 		
 			Sound s = this.Sounds.CreateSound("gliss");
-				//Sounds.CreateSound("gliss");
 			s.Play(1);
 
 
