@@ -5,13 +5,10 @@ using System.Text;
 using System.Net.Sockets;
 using Sifteo;
 using Newtonsoft.Json;
-using CubeInfoContainer;
-using GameContainer;
 
 
 
-
-namespace CClient
+namespace Dontpanic
 {
 	public class SClient
 	{
@@ -80,7 +77,7 @@ namespace CClient
 			return gamecont;
 		}
 
-		public bool move(int player, int node){
+		public void move(int player, int node){
 			string msg = "{ \"command\": \"move_player\", ";
 			msg = msg + "\"player_id\": " + player + ", ";
 			msg = msg + "\"node\": " + node + " }";
@@ -90,7 +87,25 @@ namespace CClient
 			// { "command": "thecommand" 
 			// { "move": (int)node }
 
-			return false;
+
+
+
+		}
+
+		public void decpanic(int zone){
+			string msg = "{ \"command\": \"decrease_panic\", ";
+			msg = msg + "\"zone\": " + zone + ", ";
+			msg = msg + "\"szone\": " + zone + " }";
+
+			request (msg);
+
+		}
+		public void movePeople(int fzone, int tzone){
+			string msg = "{ \"command\": \"move_people\", ";
+			msg = msg + "\"fzone\": " + fzone + ", ";
+			msg = msg + "\"tzone\": " + tzone + " }";
+
+			request (msg);
 
 		}
 	

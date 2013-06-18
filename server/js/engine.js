@@ -50,6 +50,7 @@ var ge = module.exports = function (id, client, template,template_id, id_replay)
 	for(var i = 0;i<template.map.zones.length; i++){
 		var tzone = template.map.zones[i];
 		this.map.zones.push(new ge.Zone(tzone));
+		
 	}
 
 	//Players

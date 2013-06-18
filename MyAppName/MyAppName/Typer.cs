@@ -1,7 +1,7 @@
 using System;
 using Sifteo;
 
-namespace CubeTyper
+namespace Dontpanic
 {
 	public class Typer
 	{
@@ -28,6 +28,63 @@ namespace CubeTyper
 
 			}
 		}
+		public int getIntLength(string text){
+			int length = 0;
+			foreach(char c in text.ToCharArray()){
+				length += getNumberLength(c);
+			}
+			return length;
+		}
+
+
+		public int getNumberLength(Char c){
+			switch (c){
+
+			case '0':
+
+			return 9;
+
+			case '1':
+
+
+			return 3;
+
+			case '2':
+
+			return 9;
+
+			case '3':
+
+			return 7;
+
+			case '4':
+
+			return 9;
+			case '5':
+
+			return 9;
+			case '6':
+
+
+
+			return 9;
+			case '7':
+
+
+
+			return 7;
+			case '8':
+
+
+			return 9;
+			case '9':
+
+			return 9;
+
+			}
+		return 30;
+		}
+
 		// draws a char to on the cube 
 		// returns an int to tell how wide the char is
 		public int printChar( Color chr_clr, Cube cube, char d, int cX, int cY){
@@ -561,8 +618,15 @@ namespace CubeTyper
 				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4); // 7
 
 				return 9;
+
+			case '-':
+
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2); // 4 
+
+				return 5;
 			
 			}
+
 			return 5;
 		
 

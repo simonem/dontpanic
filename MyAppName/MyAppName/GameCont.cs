@@ -2,7 +2,7 @@ using System;
 using Sifteo;
 
 
-namespace GameContainer
+namespace Dontpanic
 {
 	public class GameCont
 	{
@@ -53,6 +53,7 @@ namespace GameContainer
 		public int nodeid;
 		
 		public int[] zones;
+	
 
 		
 
@@ -64,6 +65,7 @@ namespace GameContainer
 			role = grole;
 			nodeid = gnodeid;
 			zones = gzones;
+		
 		}
 		public string getRole(){
 			return role;
@@ -79,6 +81,7 @@ namespace GameContainer
 			return -1;
 
 		}
+	
 		
 	}
 
@@ -87,6 +90,7 @@ namespace GameContainer
 		public int panic;
 		public int people;
 
+
 		public Zone()
 		{
 
@@ -94,6 +98,7 @@ namespace GameContainer
 		public Zone(int gpeople, int gpanic){
 			panic = gpanic;
 			people = gpeople;
+
 		}
 		public int getPanic(){
 			return panic;
@@ -101,6 +106,7 @@ namespace GameContainer
 		public int getPeople(){
 			return people;
 		}
+
 
 	}
 
