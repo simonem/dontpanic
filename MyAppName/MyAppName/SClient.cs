@@ -43,7 +43,6 @@ namespace Dontpanic
 
 				stm.Write(bb, 0, bb.Length);
 
-				//int k = stm.Read(ba, 0, 100);
 				string str = "";
 				StreamReader reader = new StreamReader(stm);
 
@@ -64,15 +63,13 @@ namespace Dontpanic
 			tcpclnt.Close ();
 		}
 
+
+		// gets the newest gamecontainer object from the server
 		public GameCont getGameInfo(){
 
 			string gamecontstring = request ("gameinfo");
 
 			GameCont gamecont = JsonConvert.DeserializeObject<GameCont> (gamecontstring);
-			//GameCont gamec = JsonConvert.DeserializeAnonymousType<GameCont> (gamecontstring, new GameCont ());
-			// pritn gc
-
-			//Log.Debug ( "is this right role? " + gamec.getPlayer(0).getRole());
 
 			return gamecont;
 		}
@@ -89,7 +86,6 @@ namespace Dontpanic
 
 
 
-
 		}
 
 		public void decpanic(int zone){
@@ -99,6 +95,7 @@ namespace Dontpanic
 
 			request (msg);
 
+
 		}
 		public void movePeople(int fzone, int tzone){
 			string msg = "{ \"command\": \"move_people\", ";
@@ -106,6 +103,8 @@ namespace Dontpanic
 			msg = msg + "\"tzone\": " + tzone + " }";
 
 			request (msg);
+			
+
 
 		}
 	

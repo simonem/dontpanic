@@ -56,7 +56,6 @@ namespace Dontpanic
 
 
 
-			cube.ClearEvents ();
 			Typer typer = new Typer ();
 			// Draw background
 			// maybe draw an image as bg template 
@@ -65,9 +64,9 @@ namespace Dontpanic
 
 			
 				if (player == GC.getActivePlayer ()) {
-					cube.FillScreen (new Color(100, 100,100));
-				} else {
 					cube.FillScreen (new Color(255,255,255));
+				} else {
+					cube.FillScreen (new Color(100,100,100));
 				}
 				// Draw playerinfo
 

@@ -115,58 +115,10 @@ Handles a request for gameinfo
 */
 ge.prototype.getInfo = function(request){
 
-	if(request == "nodeid"){
-		return this.players[0].node;
-		
-	}
+	
 	if(request == "gameinfo"){
-		Players = [];
-		for(var i = 0; i < this.players.length ; i++){
-			nodezones = [];
-			for( var o = 0; o < this.map.zones.length; o++){
-				if( this.map.zones[o].nodes.indexOf(this.players[i].node) > -1){
-					nodezones.push(this.map.zones[o].id);
-				}
-			}
-			roleret = "";
-			switch (this.players[i].role){
-				case 'crowd manager':
-					roleret = "cm";
-					break;
-				case 'driver':
-					roleret = "d";
-					break;
-				case 'operation expert':
-					roleret = "oe";
-					break;
-			}
-				
-					
-			
-			Players.push({
-				role : roleret,
-				nodeid : this.players[i].node,
-				zones : nodezones
-				});
-			
-		}
-		Zones = [];
-		for(var i = 0; i < this.map.zones.length; i++){
-			
-			Zones.push({
-				
-				people : this.map.zones[i].people,
-				panic : this.map.zones[i].panic_level
-				});
-
-		}
-		var returnv = {
-			activePlayer : this.active_player,
-			players : Players,
-			zones : Zones
-			
-			};
-		return JSON.stringify(returnv);
+	
+		return this.getGameContainer();
 	}
 	if(JSON.parse(request).command){
 		
@@ -185,11 +137,68 @@ ge.prototype.getInfo = function(request){
 		}
 		this.command(this.clients[0], commando);
 		
-		return "success " + JSON.parse(request).command;
+		return "Recieved Command: " + infoobj.command;
 	}
 	
 	
 	return "witty response from server";
+
+}
+
+
+
+ge.prototype.getGameContainer = function() {
+	Players = [];
+	for(var i = 0; i < this.players.length ; i++){
+		nodezones = [];
+		for( var o = 0; o < this.map.zones.length; o++){
+			if( this.map.zones[o].nodes.indexOf(this.players[i].node) > -1){
+				nodezones.push(this.map.zones[o].id);
+			}
+		}
+		roleret = "";
+		switch (this.players[i].role){
+			case 'crowd manager':
+				roleret = "cm";
+				break;
+			case 'driver':
+				roleret = "d";
+				break;
+			case 'operation expert':
+				roleret = "oe";
+				break;
+		}
+			
+				
+		
+		Players.push({
+			role : roleret,
+			nodeid : this.players[i].node,
+			zones : nodezones
+			});
+		
+	}
+	Zones = [];
+	for(var i = 0; i < this.map.zones.length; i++){
+		
+		Zones.push({
+			
+			people : this.map.zones[i].people,
+			panic : this.map.zones[i].panic_level
+			});
+
+	}
+
+	
+	var returnv = {
+		activePlayer : this.active_player,
+		actionsLeft : this.players[this.active_player].actions_left,
+		players : Players,
+		zones : Zones
+		
+		};
+	return JSON.stringify(returnv);
+
 
 }
 
@@ -1337,7 +1346,7 @@ ge.Zone.prototype.dec_panic = function(g,player, node) {
 ge.Zone.prototype.can_dec_panic = function(g,player, node) {
 	console.log("Can decrease panic?");
 	if (this.nodes.indexOf(node.id) >= 0) {
-		if(this.panic_level >= 5){
+		if(this.panic_level >= 1){
 
 			if(player.can_update_actions(g,-1)){
 				console.log("True");

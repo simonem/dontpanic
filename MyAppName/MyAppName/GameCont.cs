@@ -7,6 +7,7 @@ namespace Dontpanic
 	public class GameCont
 	{
 		public int activePlayer;
+		public int actionsLeft;
 		public Player[] players;
 		public Zone[] zones;
 
@@ -14,14 +15,18 @@ namespace Dontpanic
 		{
 
 		}
-		public GameCont(int activePlayer, Player[] players, Zone[] zones){
+		public GameCont(int activePlayer, int actionsLeft, Player[] players, Zone[] zones){
 			this.activePlayer = activePlayer;
+			this.actionsLeft = actionsLeft;
 			this.players = players;
 			this.zones = zones;
 		}
 		public int getActivePlayer(){
 			return activePlayer;
 		}
+		public int getActionsLeft(){
+			return actionsLeft;
+ 		}
 		public Player getPlayer(int player){
 			if (player>=0 && player < this.players.Length) 
 			{

@@ -8,8 +8,8 @@ using Newtonsoft.Json;
 
 namespace Dontpanic
 {
-  public class MyAppName : BaseApp
-  {
+	public class MyAppName : BaseApp
+	{
 
 
 		Typer typer = new Typer();
@@ -19,20 +19,22 @@ namespace Dontpanic
 		CubeInfo cubeHandler = new CubeInfo();
 		int frame = 20;
 
+		int connectedZonePanic = -1;
+
 	
-    override public int FrameRate
-    {
-      get { return 20; }
-    }
+ 	   override public int FrameRate
+	   {
+			get { return 20; }
+	   }
 
-    // called during intitialization, before the game has started to run
-    override public void Setup()
-    {
+  	  // called during intitialization, before the game has started to run
+  		override public void Setup()
+ 	 	{
 
-		cubes = CubeSet.toArray();
+			cubes = CubeSet.toArray();
 		
-      	Log.Debug("Setup()");
-		foreach (Cube cube in CubeSet) {
+      		Log.Debug("Setup()");
+			foreach (Cube cube in CubeSet) {
 
 				cube.FillRect (new Color (255, 255, 255), 0, 0, Cube.SCREEN_WIDTH, Cube.SCREEN_HEIGHT);
 				
@@ -41,23 +43,32 @@ namespace Dontpanic
 
 
 			}
-			cubes[4].NeighborAddEvent += OnDecreasePanic; // adding event handler to the dec panic cube
+			for(int i = 0; i < 4; i++){
+				cubes[i].ButtonEvent += OnMovePlayerClick;
+			}
+
+
+			cubes[4].NeighborAddEvent += OnDecreasePanicConnect; // adding event handler to the dec panic cube
 			cubes[4].FillScreen(new Color(255,100,100));
+
 			cubes [4].Paint ();
 
-			cubes[5].NeighborAddEvent += OnMovePeople; // adding event handler to the move people cube
-			cubes[5].FillScreen(new Color(100,100,0));
+			cubes[5].NeighborAddEvent += OnMovePeopleConnect; // adding event handler to the move people cube
+			cubes [5].ButtonEvent += OnCancelMoveClick;
+			//cubes[5].FillScreen(new Color(100,100,0));
+
+			cubes [5].Image ("DPBump", 0, 0, 0, 0, 128, 128, 0, 0);
 			cubes [5].Paint ();
 		
-		scli = new SClient ();
-    }
+			scli = new SClient ();
+    	}
 
 
 
 	
 		// TODO : create a buttonpressed event for each of the playercubes.
-    override public void Tick()
-    {
+    	override public void Tick()
+    	{
 
 			if (scli.isReady() && frame >= 20) {
 				frame = 0;
@@ -66,11 +77,6 @@ namespace Dontpanic
 
 				gameContainer = scli.getGameInfo ();
 
-				if(cubes[gameContainer.getActivePlayer()].ButtonIsPressed){
-					Cube cube = cubes [gameContainer.getActivePlayer()];
-					int node = cube.Tilt [0] * 3 + cube.Tilt [1];
-					scli.move(gameContainer.getActivePlayer(), node);
-				}
 
 				//gameContainer.print ();
 
@@ -122,7 +128,7 @@ namespace Dontpanic
 			frame++;
 
 
- 	}
+ 		}
 
 		public int FindZone(int node, Cube.Side cubeside){
 			switch (node) {
@@ -227,9 +233,36 @@ namespace Dontpanic
 
 		}
 
+		public void OnMovePlayerClick(Cube c, bool pressed){
 
-		public void OnDecreasePanic (Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2){ // occurs when the panic dec cube has been connected with another cube.
 
+			if(cubes[gameContainer.getActivePlayer()].Equals(c) && pressed){
+
+
+				int node = c.Tilt [0] * 3 + c.Tilt [1];
+				scli.move(gameContainer.getActivePlayer(), node);
+			}
+
+
+	
+		}
+
+		public void OnCancelMoveClick(Cube c, bool pressed){
+			if(pressed){
+				cubeHandler.amount = 0;
+				cubeHandler.fzone = -1;
+
+				
+				c.Image ("DPBump", 0, 0, 0, 0, 128, 128, 0, 0);
+				c.Paint ();
+			}
+
+		}
+
+
+		public void OnDecreasePanicConnect (Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2){ // occurs when the panic dec cube has been connected with another cube.
+
+			// finds the player accosiated with cube2
 			int player = -1;
 			for(int i = 0 ; i < cubes.Length; i++){
 				if (cubes[i].Equals(cube2)){
@@ -242,27 +275,68 @@ namespace Dontpanic
 
 				int zone = FindZone (gameContainer.getPlayer(player).getNodeid(), side2);
 				cube1.FillScreen(new Color(255,100,100));
+
 				int removed = 5;
 				if (gameContainer.getPlayer (player).getRole () == "cm") {
 					removed = 10;
 				}
+				int previouspanic = gameContainer.getZone (zone).getPanic ();
 
-				typer.printText (cube1, gameContainer.getZone(zone).getPanic() + " -" + removed, 20, 20);
-				scli.decpanic (zone);
-				cube1.Paint ();
+				if(removed > previouspanic){
+					removed = previouspanic;
+				}
 
+				if(gameContainer.getActionsLeft() > 0){
+					
+					cube1.Image ("PanicConnected", 0, 0, 0, 0, 128, 128, 0, 0);
+					typer.printText (cube1, "" + removed , 80, 100);
+					typer.printText (cube1, "" +  previouspanic, 50, 40);
+					cube1.Paint ();
+					cube1.ClearEvents ();
+					cube1.ButtonEvent += OnDecreasePanicPush;
+					cube1.NeighborRemoveEvent += OnDecreasePanicDetach;
+					connectedZonePanic = zone;
+				}
+				else {
+
+				}
 
 			}
 
 		}
-		public void OnMovePeople(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2)  {
+
+		public void OnDecreasePanicPush(Cube c, bool pressed){
+
+			c.ClearEvents ();
+			c.NeighborRemoveEvent += OnDecreasePanicDetach;
+
+			c.FillScreen(new Color(255,100,100));
+			
+			c.Image ("FaceDPt2", 0, 0, 0, 0, 128, 128, 0, 0);
+			c.Paint ();
+
+			scli.decpanic (connectedZonePanic);
+
+
+		}
+
+		public void OnDecreasePanicDetach(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2)  {
+			connectedZonePanic = -1;
+			cube1.FillScreen(new Color(255,100,100));
+			cube1.Paint ();
+			cube1.ClearEvents ();
+			cube1.NeighborAddEvent += OnDecreasePanicConnect;
+
+
+		}
+		public void OnMovePeopleConnect(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2)  {
 
 		
 			Sound s = this.Sounds.CreateSound("gliss");
 			s.Play(1);
 
 
-
+			// finds the player accosiated with cube2
 			int player = -1;
 			for(int i = 0 ; i < cubes.Length; i++){
 				if (cubes[i].Equals(cube2)){
@@ -294,8 +368,10 @@ namespace Dontpanic
 
 
 						cube1.FillScreen(new Color(100,100,0));
-						typer.printText (cube1, "" + zone, 20, 20);
-						typer.printText (cube1, "" + (eachmove * cubeHandler.amount), 20, 40);
+						//typer.printText (cube1, "" + zone, 20, 20);
+						//typer.printText (cube1, "" + (eachmove * cubeHandler.amount), 20, 40);
+						
+						cube1.Image ("Walking", 0, 0, 0, 0, 128, 128, 0, 0);
 						cube1.Paint ();
 					}
 
@@ -313,6 +389,7 @@ namespace Dontpanic
 					cubeHandler.fzone = -1;
 					cube1.FillScreen(new Color(100,100,0));
 					cube1.Paint ();
+					cube1.NeighborRemoveEvent += OnMovePeopleDetach;
 				}
 
 
@@ -321,6 +398,18 @@ namespace Dontpanic
 
 			}
 
+
+
+		}
+
+		public void OnMovePeopleDetach(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2){
+			cube1.ClearEvents ();
+			cube1.ButtonEvent += OnCancelMoveClick;
+			cube1.NeighborAddEvent += OnMovePeopleConnect;
+			cube1.FillScreen(new Color(100,100,0));
+
+			cubes [5].Image ("DPBump", 0, 0, 0, 0, 128, 128, 0, 0);
+			cube1.Paint ();
 
 
 		}

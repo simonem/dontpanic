@@ -1,14 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ActiveRuntime="Mono 2.10.9" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyAppName\SClient.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MyAppName\MyAppName.cs">
     <Files>
       <File FileName="MyAppName\AssemblyInfo.cs" Line="14" Column="32" />
-      <File FileName="MyAppName\GameCont.cs" Line="13" Column="21" />
-      <File FileName="MyAppName\SClient.cs" Line="71" Column="1" />
-      <File FileName="MyAppName\Typer.cs" Line="124" Column="52" />
-      <File FileName="MyAppName\CubeInfo.cs" Line="164" Column="6" />
-      <File FileName="MyAppName\MyAppName.cs" Line="242" Column="5" />
-      <File FileName="MyAppName\Bootstrap.cs" Line="9" Column="69" />
+      <File FileName="MyAppName\GameCont.cs" Line="15" Column="4" />
+      <File FileName="MyAppName\SClient.cs" Line="78" Column="52" />
+      <File FileName="MyAppName\Typer.cs" Line="1" Column="1" />
+      <File FileName="MyAppName\CubeInfo.cs" Line="67" Column="36" />
+      <File FileName="MyAppName\MyAppName.cs" Line="300" Column="11" />
+      <File FileName="MyAppName\Bootstrap.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
