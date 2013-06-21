@@ -1,13 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ActiveRuntime="Mono 2.10.9" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyAppName\MyAppName.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MyAppName\AssemblyInfo.cs">
     <Files>
       <File FileName="MyAppName\AssemblyInfo.cs" Line="14" Column="32" />
-      <File FileName="MyAppName\GameCont.cs" Line="15" Column="4" />
-      <File FileName="MyAppName\SClient.cs" Line="78" Column="52" />
-      <File FileName="MyAppName\Typer.cs" Line="1" Column="1" />
-      <File FileName="MyAppName\CubeInfo.cs" Line="67" Column="36" />
-      <File FileName="MyAppName\MyAppName.cs" Line="300" Column="11" />
+      <File FileName="MyAppName\GameCont.cs" Line="19" Column="3" />
+      <File FileName="MyAppName\SClient.cs" Line="40" Column="86" />
+      <File FileName="MyAppName\Typer.cs" Line="36" Column="6" />
+      <File FileName="MyAppName\CubeInfo.cs" Line="95" Column="6" />
+      <File FileName="MyAppName\MyAppName.cs" Line="87" Column="15" />
       <File FileName="MyAppName\Bootstrap.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

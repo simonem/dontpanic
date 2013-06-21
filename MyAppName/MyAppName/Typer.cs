@@ -10,7 +10,7 @@ namespace Dontpanic
 		{
 
 		}
-	
+		
 		public void printText(Cube cube, String text, int x, int y){
 			int offset = 0;
 			foreach(char c in text.ToLower().ToCharArray()){
@@ -19,7 +19,9 @@ namespace Dontpanic
 
 			}
 		}
-
+		/**
+		 * 
+		 */
 		public void printText(Color chr_clr, Cube cube, String text, int x, int y){
 			int offset = 0;
 			foreach(char c in text.ToLower().ToCharArray()){
@@ -28,6 +30,11 @@ namespace Dontpanic
 
 			}
 		}
+		/**
+		 * Gets the length of a number without drawing it on the screen,
+		 * only works for a number in string format at the moment
+		 * 
+		 */
 		public int getIntLength(string text){
 			int length = 0;
 			foreach(char c in text.ToCharArray()){
@@ -36,7 +43,10 @@ namespace Dontpanic
 			return length;
 		}
 
-
+		/**
+		 * fetches the length of a number without drawing it to a cube
+		 * 
+		 */
 		public int getNumberLength(Char c){
 			switch (c){
 
@@ -74,8 +84,13 @@ namespace Dontpanic
 		return 30;
 		}
 
-		// draws a char to on the cube 
-		// returns an int to tell how wide the char is
+
+		/**
+		 * Draws a char to a cube
+		 * 
+		 * this method is unfinished, only the numbers and the sign '-' is working as intended at the moment
+		 * 
+		 */
 		public int printChar( Color chr_clr, Cube cube, char d, int cX, int cY){
 
 

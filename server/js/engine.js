@@ -159,13 +159,13 @@ ge.prototype.getGameContainer = function() {
 		roleret = "";
 		switch (this.players[i].role){
 			case 'crowd manager':
-				roleret = "cm";
+				roleret = "crowd_manager";
 				break;
 			case 'driver':
-				roleret = "d";
+				roleret = "driver";
 				break;
 			case 'operation expert':
-				roleret = "oe";
+				roleret = "operation_expert";
 				break;
 		}
 			
@@ -193,6 +193,7 @@ ge.prototype.getGameContainer = function() {
 	var returnv = {
 		activePlayer : this.active_player,
 		actionsLeft : this.players[this.active_player].actions_left,
+		timer : this.timer,
 		players : Players,
 		zones : Zones
 		

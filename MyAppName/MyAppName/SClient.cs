@@ -13,10 +13,12 @@ namespace Dontpanic
 	public class SClient
 	{
 
-		TcpClient tcpclnt;
+		private TcpClient tcpclnt;
 		private bool ready;
 
-
+		/**
+		 * Instatiates  a tcp client made to communicate with the nodejs server.
+		 */
 		public SClient ()
 		{
 			tcpclnt = new TcpClient();
@@ -29,8 +31,17 @@ namespace Dontpanic
 			ready = true;
 
 		}
-		public string request(string msg){
+
+		/**
+		 * The basic method used for transmitting to the server and reading the response
+		 * dont use this method to communicate with the server, use other methods in the SClient class
+		 * 
+		 * takes the provided string msg and translates it to bytes in ASCII so it can be sendt to the server
+		 * then uses a streamreader and reads a line from the stream and returns that line.
+		 */
+		private string request(string msg){
 			try{
+
 				ready = false;
 
 				Log.Debug("Sending: " + msg);
@@ -64,7 +75,9 @@ namespace Dontpanic
 		}
 
 
-		// gets the newest gamecontainer object from the server
+		/** Gets the newest gamecontainer object from the server
+		 * returns a GameCont object  
+		 */
 		public GameCont getGameInfo(){
 
 			string gamecontstring = request ("gameinfo");
@@ -74,6 +87,11 @@ namespace Dontpanic
 			return gamecont;
 		}
 
+		/**
+		 * makes a json string and sends it to the server
+		 * calling this will execute a move command on the provided player and attempt to move it to the provided node,
+		 * at the moment there is no easy way to know if the move was successful before the next gamecont object is fetched from the server
+		 */
 		public void move(int player, int node){
 			string msg = "{ \"command\": \"move_player\", ";
 			msg = msg + "\"player_id\": " + player + ", ";
@@ -88,6 +106,11 @@ namespace Dontpanic
 
 		}
 
+		/**
+		 * makes a json string and sends it to the server via the request method
+		 * calling this will execute a decrease panic command to the provided zone on the server.
+		 * at the moment there is no easy way to know if the decrease panic was succesful before the next gamecont object is fetched from the server
+		 */
 		public void decpanic(int zone){
 			string msg = "{ \"command\": \"decrease_panic\", ";
 			msg = msg + "\"zone\": " + zone + ", ";
@@ -97,6 +120,11 @@ namespace Dontpanic
 
 
 		}
+		/**
+		 * makes a json string and sends it to the server via the request method
+		 * calling this will execute a move peope command between the 2 zones on the server.
+		 * at the momen there is no easy way to know if the move was succesful untill before the next gamecont object is fetched from the server
+		 */
 		public void movePeople(int fzone, int tzone){
 			string msg = "{ \"command\": \"move_people\", ";
 			msg = msg + "\"fzone\": " + fzone + ", ";
@@ -108,7 +136,9 @@ namespace Dontpanic
 
 		}
 	
-
+		/**
+		 * basic method to check if the client is transmitting to prevent it from sending several requests at once
+		 */
 		public bool isReady(){
 			if (ready) {
 				return true;

@@ -18,6 +18,12 @@ namespace Dontpanic
 		Cube[] cubes;
 		CubeInfo cubeHandler = new CubeInfo();
 		int frame = 20;
+		Sound movePlayer;
+		Sound timer10sec;
+		Sound decPanic;
+		Sound movePeople;
+
+		int language = 1;
 
 		int connectedZonePanic = -1;
 
@@ -30,6 +36,11 @@ namespace Dontpanic
   	  // called during intitialization, before the game has started to run
   		override public void Setup()
  	 	{
+			movePlayer = Sounds.CreateSound ("moving_player");
+			timer10sec = Sounds.CreateSound ("10sec_left");
+			decPanic = Sounds.CreateSound ("dec_panic");
+			movePeople = Sounds.CreateSound("move_people");
+
 
 			cubes = CubeSet.toArray();
 		
@@ -56,8 +67,10 @@ namespace Dontpanic
 			cubes[5].NeighborAddEvent += OnMovePeopleConnect; // adding event handler to the move people cube
 			cubes [5].ButtonEvent += OnCancelMoveClick;
 			//cubes[5].FillScreen(new Color(100,100,0));
+			cubes[5].NeighborRemoveEvent += OnMovePeopleDetach;
 
-			cubes [5].Image ("DPBump", 0, 0, 0, 0, 128, 128, 0, 0);
+		
+			cubes [5].Image ("DPBump", 0, 0, 0, language * 128, 128, 128, 0, 0);
 			cubes [5].Paint ();
 		
 			scli = new SClient ();
@@ -66,7 +79,7 @@ namespace Dontpanic
 
 
 	
-		// TODO : create a buttonpressed event for each of the playercubes.
+
     	override public void Tick()
     	{
 
@@ -79,6 +92,11 @@ namespace Dontpanic
 
 
 				//gameContainer.print ();
+				if(gameContainer.getTimer() < 10){
+					if(!timer10sec.IsPlaying){
+						timer10sec.Play (1);
+					}
+				}
 
 				for(int i = 0 ; i < 4 && i < cubes.Length; i++){ 
 					cubeHandler.Draw (cubes[i], i, gameContainer);
@@ -129,7 +147,10 @@ namespace Dontpanic
 
 
  		}
-
+		/**
+		 * This method takes a nodeid and a side of a cube and returns the id of the zone 
+		 * that lies on that side of the node, any changes to the map needs to be made here aswell
+		 */
 		public int FindZone(int node, Cube.Side cubeside){
 			switch (node) {
 
@@ -241,6 +262,9 @@ namespace Dontpanic
 
 				int node = c.Tilt [0] * 3 + c.Tilt [1];
 				scli.move(gameContainer.getActivePlayer(), node);
+				if(!movePlayer.IsPlaying){
+					movePlayer.Play (1);
+				}
 			}
 
 
@@ -252,8 +276,8 @@ namespace Dontpanic
 				cubeHandler.amount = 0;
 				cubeHandler.fzone = -1;
 
-				
-				c.Image ("DPBump", 0, 0, 0, 0, 128, 128, 0, 0);
+				c.FillScreen (new Color(100,100,0));
+				c.Image ("DPBump", 0, 0, 0, language * 128, 128, 128, 0, 0);
 				c.Paint ();
 			}
 
@@ -288,7 +312,7 @@ namespace Dontpanic
 
 				if(gameContainer.getActionsLeft() > 0){
 					
-					cube1.Image ("PanicConnected", 0, 0, 0, 0, 128, 128, 0, 0);
+					cube1.Image ("DPPanic", 0, 0, 0, language * 128, 128, 128, 0, 0);
 					typer.printText (cube1, "" + removed , 80, 100);
 					typer.printText (cube1, "" +  previouspanic, 50, 40);
 					cube1.Paint ();
@@ -312,8 +336,11 @@ namespace Dontpanic
 
 			c.FillScreen(new Color(255,100,100));
 			
-			c.Image ("FaceDPt2", 0, 0, 0, 0, 128, 128, 0, 0);
+			c.Image ("faceDP", 0, 0, 0, 0, 128, 128, 0, 0);
 			c.Paint ();
+			if(!decPanic.IsPlaying){
+				decPanic.Play (1);
+			}
 
 			scli.decpanic (connectedZonePanic);
 
@@ -323,6 +350,7 @@ namespace Dontpanic
 		public void OnDecreasePanicDetach(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2)  {
 			connectedZonePanic = -1;
 			cube1.FillScreen(new Color(255,100,100));
+			cube1.Image ("DPPanic2", 0, 0, 0, language * 128, 128, 128, 0, 0);
 			cube1.Paint ();
 			cube1.ClearEvents ();
 			cube1.NeighborAddEvent += OnDecreasePanicConnect;
@@ -332,9 +360,9 @@ namespace Dontpanic
 		public void OnMovePeopleConnect(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2)  {
 
 		
-			Sound s = this.Sounds.CreateSound("gliss");
-			s.Play(1);
-
+//			Sound s = this.Sounds.CreateSound("gliss");
+//			s.Play(1);
+//
 
 			// finds the player accosiated with cube2
 			int player = -1;
@@ -371,7 +399,7 @@ namespace Dontpanic
 						//typer.printText (cube1, "" + zone, 20, 20);
 						//typer.printText (cube1, "" + (eachmove * cubeHandler.amount), 20, 40);
 						
-						cube1.Image ("Walking", 0, 0, 0, 0, 128, 128, 0, 0);
+						cube1.Image ("movePeople", 0, 0, 0, 0, 128, 128, 0, 0);
 						cube1.Paint ();
 					}
 
@@ -388,8 +416,12 @@ namespace Dontpanic
 					cubeHandler.amount = 0;
 					cubeHandler.fzone = -1;
 					cube1.FillScreen(new Color(100,100,0));
+					cube1.Image ("movePeople", 0, 0, 0, 0, 128, 128, 0, 0);
 					cube1.Paint ();
-					cube1.NeighborRemoveEvent += OnMovePeopleDetach;
+
+					if(!movePeople.IsPlaying){
+						movePeople.Play (1);
+					}
 				}
 
 
@@ -403,13 +435,21 @@ namespace Dontpanic
 		}
 
 		public void OnMovePeopleDetach(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2){
-			cube1.ClearEvents ();
-			cube1.ButtonEvent += OnCancelMoveClick;
-			cube1.NeighborAddEvent += OnMovePeopleConnect;
-			cube1.FillScreen(new Color(100,100,0));
 
-			cubes [5].Image ("DPBump", 0, 0, 0, 0, 128, 128, 0, 0);
-			cube1.Paint ();
+			if (cubeHandler.amount > 0) {
+				
+				cube1.FillScreen (new Color(100,100,0));
+
+				cube1.Image ("DPBump2", 0, 0, 0, language *128, 128, 128, 0, 0);
+				cube1.Paint ();
+
+
+			} else {
+				cube1.FillScreen (new Color(100,100,0));
+
+				cube1.Image ("DPBump", 0, 0, 0, language*128, 128, 128, 0, 0);
+				cube1.Paint ();
+			}
 
 
 		}

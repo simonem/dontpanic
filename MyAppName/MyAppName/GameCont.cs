@@ -4,20 +4,29 @@ using Sifteo;
 
 namespace Dontpanic
 {
+	/**
+	 * This object is made to only fit the neccecary info for keeping the cubes updated 
+	 * if this class is to be changed the gameinfo object made in the engine.js on the server require the same change
+	 * otherwise the JSON deserializer wont like it.
+	 */
 	public class GameCont
 	{
 		public int activePlayer;
 		public int actionsLeft;
+		public int timer;
 		public Player[] players;
 		public Zone[] zones;
+
+
 
 		public GameCont ()
 		{
 
 		}
-		public GameCont(int activePlayer, int actionsLeft, Player[] players, Zone[] zones){
+		public GameCont(int activePlayer, int actionsLeft, int timer, Player[] players, Zone[] zones){
 			this.activePlayer = activePlayer;
 			this.actionsLeft = actionsLeft;
+			this.timer = timer;
 			this.players = players;
 			this.zones = zones;
 		}
@@ -27,6 +36,9 @@ namespace Dontpanic
 		public int getActionsLeft(){
 			return actionsLeft;
  		}
+		public int getTimer(){
+			return timer;
+		}
 		public Player getPlayer(int player){
 			if (player>=0 && player < this.players.Length) 
 			{

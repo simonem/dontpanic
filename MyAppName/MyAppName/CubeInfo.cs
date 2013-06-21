@@ -7,17 +7,26 @@ namespace Dontpanic
 {
 	public class CubeInfo
 	{
-		
-		public int fzone = -1;
+
+		// fzone is the zone currently being used by the move people cube
+		// amount is how many times the cube wants to move people in one go  THIS MIGHT BE REMOVED AT A LATER STAGE DEPENDING ON THE RULES OF THE GAME
+		// onTheMove
+		public int fzone = -1; 
 		public int amount = 0;
 		public int onTheMove = 0;
+
 
 		public CubeInfo()
 		{
 
 		}
 
-		public void drawZone(Cube cube, Zone zone, int x, int y, int zoneid){
+
+		/**
+		 * Draws a zone on the provided cube, zone is the zone to be drawn, pos is which of the 4 sides to draw on
+		 * where 1 is top, 2 is left side, 3 is right side and 4 is the bottom. the zoneid is used to draw if someone is currently beeing moved from that zone
+		 */
+		public void drawZone(Cube cube, Zone zone, int pos, int zoneid){
 			Typer typer = new Typer ();
 			Color zonecolor = new Color (0, 0, 0);
 			Color invzonecolor = new Color (255 , 255, 255);
@@ -38,19 +47,52 @@ namespace Dontpanic
 				invzonecolor = new Color (255, 0, 255);
 			}
 
+			int x = 0;
+			int y = 0;
+			int w = 1;
+			int h = 1;
+			switch(pos){
+			case 1:
+				x = 1;
+				w = 2;
+				break;
+			case 2:
+				y = 1;
+				h = 2;
+				break;
+			case 3:
+				x = 3;
+				y = 1;
+				h = 2;
+				break;
+			case 4:
+				x = 1;
+				y = 3;
+				w = 2;
+				break;
+			}
 
-			cube.FillRect (zonecolor,  (x*Cube.SCREEN_WIDTH  /4), (y * Cube.SCREEN_HEIGHT / 4), Cube.SCREEN_WIDTH / 4, Cube.SCREEN_HEIGHT / 4);
+
+
+			cube.FillRect (zonecolor,  (x*Cube.SCREEN_WIDTH  /4), (y * Cube.SCREEN_HEIGHT / 4), w * Cube.SCREEN_WIDTH / 4, h * Cube.SCREEN_HEIGHT / 4);
+
+
 			if(zoneid == fzone){
 
-				typer.printText (invzonecolor, cube, "" + (zone.getPeople() - onTheMove), (x * Cube.SCREEN_WIDTH  /4) + (Cube.SCREEN_WIDTH/8 - typer.getIntLength( "" + zone.getPeople())/2),  (y * Cube.SCREEN_HEIGHT / 4));
+				typer.printText (invzonecolor, cube, "" + (zone.getPeople() - onTheMove),(x * Cube.SCREEN_WIDTH  /4) + ((w) * Cube.SCREEN_WIDTH/8) - (typer.getIntLength( "" + zone.getPeople())/2),  (y * Cube.SCREEN_HEIGHT / 4) + ((h - 1) * Cube.SCREEN_HEIGHT / 8));
 			}
 			else{
-				typer.printText (invzonecolor, cube, "" + zone.getPeople(), (x * Cube.SCREEN_WIDTH  /4) + (Cube.SCREEN_WIDTH/8 - typer.getIntLength( "" + zone.getPeople())/2),  (y * Cube.SCREEN_HEIGHT / 4));
+				typer.printText (invzonecolor, cube, "" + zone.getPeople(), (x * Cube.SCREEN_WIDTH  /4) + ((w) * Cube.SCREEN_WIDTH/8) - (typer.getIntLength( "" + zone.getPeople())/2),  (y * Cube.SCREEN_HEIGHT / 4) + ((h - 1) * Cube.SCREEN_HEIGHT / 8));
 			}
 
 
 		}
 
+
+		/** Draw method for the player cubes,
+		 *  cube is the cube to be drawn on, player is the player to draw and the gamecontainer is used to get info about the player
+		 *  such as if its the active player, the role, and so forth
+		 */
 		public void Draw(Cube cube, int player, GameCont GC){
 
 
@@ -59,172 +101,89 @@ namespace Dontpanic
 			Typer typer = new Typer ();
 			// Draw background
 			// maybe draw an image as bg template 
-			//cube.FillRect (new Color (255, 255, 255), 0, 0, Cube.SCREEN_WIDTH, Cube.SCREEN_HEIGHT);
 			if (!GC.getPlayer (player).Equals (null)) {
 
 			
 				if (player == GC.getActivePlayer ()) {
 					cube.FillScreen (new Color(255,255,255));
+					typer.printText (cube, "" + GC.getActionsLeft (), 0, 0);
 				} else {
 					cube.FillScreen (new Color(100,100,100));
 				}
 				// Draw playerinfo
+//
+//				// Draw role    Change in engine.js if this is going to be used again
+//				typer.printText (cube, GC.getPlayer (player).getRole (), Cube.SCREEN_WIDTH / 4, Cube.SCREEN_HEIGHT / 4);
+				// Drawing role as a image:
+				cube.Image (GC.getPlayer (player).getRole (), Cube.SCREEN_WIDTH / 4, Cube.SCREEN_HEIGHT / 4, 0, 0, 48, 48, 0, 0);
 
-				// Draw role
-				typer.printText (cube, GC.getPlayer (player).getRole (), Cube.SCREEN_WIDTH / 4, Cube.SCREEN_HEIGHT / 4);
 
 				// Draw nodeid
 				typer.printText (cube, "" + GC.getPlayer (player).getNodeid (), Cube.SCREEN_WIDTH / 4, Cube.SCREEN_HEIGHT / 2);
+
+
 			
-
-				/*/
-				// Draw zones 
-				for (int i = 0; i < 2; i++) {
-					for (int o = 0; o < 2; o++) {
-
-						int zone = GC.getPlayer (player).getZone ((i*2)+(o*1));
-						if (zone == -1) {
-							break;
-						} else {
-
-							int R = (int)(255 * ((double)GC.getZone(zone).getPanic() / (double)50));
-							int G = 0;
-							int B = 0;
-							Color zonecolor = new Color (R, G, B);
-							Color invzonecolor = new Color (255 - R, 255 - G, 255 - B);
-
-
-							cube.FillRect (zonecolor,i * (3 *  Cube.SCREEN_WIDTH / 4 ), o * (3 * Cube.SCREEN_HEIGHT / 4), Cube.SCREEN_WIDTH / 4, Cube.SCREEN_HEIGHT / 4);
-							typer.printText (invzonecolor, cube,  "" + GC.getZone (zone).getPeople (), i * (3*Cube.SCREEN_WIDTH  /4), o * (3 * Cube.SCREEN_HEIGHT / 4));
-
-							typer.printText (invzonecolor, cube, "" + GC.getZone (zone).getPanic (),i * (3* Cube.SCREEN_WIDTH /4), 15 + o * (3 * Cube.SCREEN_HEIGHT / 4));
-						}
-
-					}
-				}
-
-				/*/
 
 				// harcoded draw zones
 				switch (GC.getPlayer (player).getNodeid ()) {
 
 				case 0:
 
-					drawZone (cube, GC.getZone (0), 2, 0, 0);
-					drawZone (cube, GC.getZone (6), 3, 1, 6);
+					drawZone (cube, GC.getZone (0), 1, 0);
+					drawZone (cube, GC.getZone (6), 3, 6);
 					break;
 
 				case 1:
-					drawZone (cube, GC.getZone (0), 3, 3, 0);
-					drawZone (cube, GC.getZone (1), 3, 1, 1);
+					drawZone (cube, GC.getZone (0), 4, 0);
+					drawZone (cube, GC.getZone (1), 3, 1);
 					break;
 				case 2:
-					drawZone (cube, GC.getZone (0), 0, 2, 0);
-					drawZone (cube, GC.getZone (1), 0, 0, 1);
-					drawZone (cube, GC.getZone (2), 3, 1, 2);
-					drawZone (cube, GC.getZone (6), 1, 3, 6);
+					drawZone (cube, GC.getZone (0), 2, 0);
+					drawZone (cube, GC.getZone (1), 1, 1);
+					drawZone (cube, GC.getZone (2), 3, 2);
+					drawZone (cube, GC.getZone (6), 4, 6);
 
 					break;
 
 				case 3:
-					drawZone (cube, GC.getZone (1), 0, 3, 1);
-					drawZone (cube, GC.getZone (2), 2, 3, 2);
-					drawZone (cube, GC.getZone (3), 3, 2, 3);
+					drawZone (cube, GC.getZone (1), 2, 1);
+					drawZone (cube, GC.getZone (2), 4, 2);
+					drawZone (cube, GC.getZone (3), 3, 3);
 
 					break;
 				
 				case 4:
-					drawZone (cube, GC.getZone (4), 0, 2, 4);
+					drawZone (cube, GC.getZone (4), 2, 4);
 
 					break;
 				case 5:
-					drawZone (cube, GC.getZone (4), 1, 0, 4);
-					drawZone (cube, GC.getZone (5), 0, 1, 5);
+					drawZone (cube, GC.getZone (4), 1, 4);
+					drawZone (cube, GC.getZone (5), 2, 5);
 					break;
 
 				case 6: 
-					drawZone (cube, GC.getZone (2), 0, 1, 2);
-					drawZone (cube, GC.getZone (3), 1, 0, 3);
-					drawZone (cube, GC.getZone (4), 3, 1, 4);
-					drawZone (cube, GC.getZone (5), 2, 3, 5);
+					drawZone (cube, GC.getZone (2), 2, 2);
+					drawZone (cube, GC.getZone (3), 1, 3);
+					drawZone (cube, GC.getZone (4), 3, 4);
+					drawZone (cube, GC.getZone (5), 4, 5);
 					break;
 
 				case 7:
-					drawZone (cube, GC.getZone (2), 1, 0, 2);
-					drawZone (cube, GC.getZone (5), 3, 1, 5);
-					drawZone (cube, GC.getZone (6), 0, 0, 6);
+					drawZone (cube, GC.getZone (2), 1, 2);
+					drawZone (cube, GC.getZone (5), 3, 5);
+					drawZone (cube, GC.getZone (6), 2, 6);
 					break;
 
 				case 8:
-					drawZone (cube, GC.getZone (3), 0, 3, 3);
-					drawZone (cube, GC.getZone (4), 2, 3, 4);
+					drawZone (cube, GC.getZone (3), 3, 3);
+					drawZone (cube, GC.getZone (4), 4, 4);
 
 					break;
 
 
 
 				}
-
-
-
-
-
-
-				/*/
-				// new Draw zones
-				Player theplayer = GC.getPlayer (player);
-
-
-				// sort in corners
-
-				int[] corner00 = new int[2];
-				int[] corner01 = new int[2];
-				int[] corner10 = new int[2];
-				int[] corner11 = new int[2];
-
-
-
-				for (int i = 0; i < GC.getPlayer(player).zones.Length; i++) {
-
-					Zone zone = GC.getZone( GC.getPlayer (player).getZone (i));
-
-					if (zone.getX () >= theplayer.getX ()) { //  zone x > player x
-
-						if (zone.getY () >= theplayer.getY ()) { // zone y > player y
-							// bottom rigth corner
-							if(corner11[0] 
-
-
-						} else { // player y > zone y 
-							// top right corner 
-
-
-
-						}
-
-
-
-					} else { //  player x > zone x
-						if (zone.getY () >= theplayer.getY ()) { // zone y > player y
-							// bottom left corner
-
-
-
-						} else { // player y > zone y 
-							// top left corner
-
-
-						}
-
-
-					}
-
-
-
-				}/*/
 				cube.Paint ();
-
-
 
 			}
 
