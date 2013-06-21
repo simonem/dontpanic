@@ -1,0 +1,135 @@
+<Project>
+  <Name>Untitled</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>Untitled</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>DontPanicMain</Name>
+        <Access>Public</Access>
+        <Location left="10" top="17" />
+        <Size width="513" height="485" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">Typer typer</Member>
+        <Member type="Field">SClient scli</Member>
+        <Member type="Field">GameCont gameContainer</Member>
+        <Member type="Field">Cube[] cubes</Member>
+        <Member type="Field">CubeInfo Cubehandler</Member>
+        <Member type="Field">int frame</Member>
+        <Member type="Field">Sound movePlayer</Member>
+        <Member type="Field">Sound timer10sec</Member>
+        <Member type="Field">Sound decPanic</Member>
+        <Member type="Field">Sound movePeople</Member>
+        <Member type="Field">int language</Member>
+        <Member type="Field">int connectedZonePanic</Member>
+        <Member type="Field">int FrameRate</Member>
+        <Member type="Method">public void Setup()</Member>
+        <Member type="Method">public void Tick()</Member>
+        <Member type="Method">public int FindZone(int node, Cube.Side cubeside)</Member>
+        <Member type="Method">public void OnMovePlayerClick(Cube c, bool pressed)</Member>
+        <Member type="Method">public void OnCancelMoveClick(Cube c, bool pressed)</Member>
+        <Member type="Method">public void OnDecreasePanicConnect(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2)</Member>
+        <Member type="Method">public void OnDecreasePanicpush(Cube c, bool pressed)</Member>
+        <Member type="Method">public void OnDecresePanicDetach(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2)</Member>
+        <Member type="Method">public void OnMovePeopleConnect(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2)</Member>
+        <Member type="Method">public void OnMovePeopleDetach(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>SClient</Name>
+        <Access>Public</Access>
+        <Location left="10" top="565" />
+        <Size width="237" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private TcpClient tcpclnt</Member>
+        <Member type="Field">private bool ready</Member>
+        <Member type="Constructor">public SClient()</Member>
+        <Member type="Method">private string request(string msg)</Member>
+        <Member type="Method">public GameCont getGameInfo()</Member>
+        <Member type="Method">public void move(int player, int node)</Member>
+        <Member type="Method">public void decpanic(int zone)</Member>
+        <Member type="Method">public void movePeople(int fzone, int tzone)</Member>
+        <Member type="Method">public bool isReady()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Typer</Name>
+        <Access>Public</Access>
+        <Location left="72" top="979" />
+        <Size width="414" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public void printText(Cube cube, String text, int x, int y)</Member>
+        <Member type="Method">public void printText(Color chr_clr, Cube cube, string text, int x, int y)</Member>
+        <Member type="Method">public int getIntLength(string text)</Member>
+        <Member type="Method">public int getNumberLength(char c)</Member>
+        <Member type="Method">public int printChar(Color chr_clr, Cube cube, char d, int cX, int cY)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>CubeInfo</Name>
+        <Access>Public</Access>
+        <Location left="567" top="41" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">int fzone</Member>
+        <Member type="Field">int amount</Member>
+        <Member type="Field">int onTheMove</Member>
+        <Member type="Constructor">public CubeInfo()</Member>
+        <Member type="Method">public void drawZone(Cube cube, Zone zone, int pos, int zoneid)</Member>
+        <Member type="Method">public void Draw(Cube cube, int player, GameCont GC)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>GameCont</Name>
+        <Access>Public</Access>
+        <Location left="578" top="291" />
+        <Size width="162" height="281" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">int activePlayer</Member>
+        <Member type="Field">int actionsLeft</Member>
+        <Member type="Field">int timer</Member>
+        <Member type="Field">Player[] players</Member>
+        <Member type="Field">Zone[] zones</Member>
+        <Member type="Constructor">public GameCont()</Member>
+        <Member type="Constructor">public GameCont(int player, int actionsLeft, int timer, Player[] players, Zone[] zones)</Member>
+        <Member type="Method">public int getActivePlayer()</Member>
+        <Member type="Method">public int getActionsLeft()</Member>
+        <Member type="Method">public int getTimer()</Member>
+        <Member type="Method">public Player getPlayer(int player)</Member>
+        <Member type="Method">public Zone getZoen(int zone)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Player</Name>
+        <Access>Public</Access>
+        <Location left="531" top="666" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">string role</Member>
+        <Member type="Field">int nodeid</Member>
+        <Member type="Field">int[] zones</Member>
+        <Member type="Constructor">public Player()</Member>
+        <Member type="Constructor">public Player(string grole, int gnodeid, int[] gzones)</Member>
+        <Member type="Method">public string getRole()</Member>
+        <Member type="Method">public int getNodeid()</Member>
+        <Member type="Method">public int getZone(int zone)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Zone</Name>
+        <Access>Public</Access>
+        <Location left="727" top="666" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">int panic</Member>
+        <Member type="Field">int people</Member>
+        <Member type="Constructor">public Zone()</Member>
+        <Member type="Constructor">public Zone(int gpeople, int gpanic)</Member>
+        <Member type="Method">public int getPanic()</Member>
+        <Member type="Method">public int getPeople()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships />
+  </ProjectItem>
+</Project>

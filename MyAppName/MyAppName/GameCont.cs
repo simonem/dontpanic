@@ -55,16 +55,12 @@ namespace Dontpanic
 			}
 			return null;
 		}
-		public void print(){
-
-			Log.Debug ("activeplayer: " + this.activePlayer);
-			Log.Debug ("Players: " + this.players[0].getRole());
-			Log.Debug ("Zones: " + this.zones[0].getPeople());
-		}
-
 
 			           
 	}
+	/**
+	 * this class is just to contain info about a player
+	 */
 	public class Player
 	{
 		public string role ;
@@ -102,7 +98,9 @@ namespace Dontpanic
 	
 		
 	}
-
+	/**
+	 * this class is just to contain info about a zone
+	 */
 	public class Zone
 	{
 		public int panic;

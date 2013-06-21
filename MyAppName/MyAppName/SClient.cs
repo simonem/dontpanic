@@ -138,6 +138,9 @@ namespace Dontpanic
 	
 		/**
 		 * basic method to check if the client is transmitting to prevent it from sending several requests at once
+		 * i made this because: during some testing the other methods seemed to be conflicting with regular once each second update
+		 * the messages seemed to overlap if there was an event just beeing called right before the update, on the other hand, it seems to work fine if and event 
+		 * is called during the update
 		 */
 		public bool isReady(){
 			if (ready) {

@@ -46,12 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="MyAppName.cs" />
     <Compile Include="GameCont.cs" />
     <Compile Include="SClient.cs" />
     <Compile Include="Typer.cs" />
     <Compile Include="CubeInfo.cs" />
     <Compile Include="Bootstrap.cs" />
+    <Compile Include="DontPanicMain.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

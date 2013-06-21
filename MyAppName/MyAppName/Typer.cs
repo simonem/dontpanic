@@ -10,8 +10,11 @@ namespace Dontpanic
 		{
 
 		}
-		
-		public void printText(Cube cube, String text, int x, int y){
+
+		/**
+		 * Prints a black text to a cube
+		 */
+		public void printText(Cube cube, string text, int x, int y){
 			int offset = 0;
 			foreach(char c in text.ToLower().ToCharArray()){
 				offset = offset + printChar(new Color(0,0,0), cube, c, x+offset, y);
@@ -20,9 +23,9 @@ namespace Dontpanic
 			}
 		}
 		/**
-		 * 
+		 * Prints text to a cube in the given color
 		 */
-		public void printText(Color chr_clr, Cube cube, String text, int x, int y){
+		public void printText(Color chr_clr, Cube cube, string text, int x, int y){
 			int offset = 0;
 			foreach(char c in text.ToLower().ToCharArray()){
 				offset = offset + printChar(chr_clr, cube, c, x+offset, y);
@@ -47,7 +50,7 @@ namespace Dontpanic
 		 * fetches the length of a number without drawing it to a cube
 		 * 
 		 */
-		public int getNumberLength(Char c){
+		public int getNumberLength(char c){
 			switch (c){
 
 			case '0':
