@@ -222,6 +222,7 @@ ge.prototype.command = function(client, c){
 
 	if(this.ended) return;
 
+	console.log(c.type);
     var nodes = this.map.nodes,
 		zones = this.map.zones,
         players = this.players,
@@ -394,6 +395,7 @@ ge.prototype.command = function(client, c){
 
 
 		case 'use_card':
+			console.log("was here and trying to use card " + c.card);
 			if(!this.used_info_card || client.is_gm){
 				var ic = players[this.active_player].info_cards.splice(c.card,1)[0];
 				changed = effect(ic, this);

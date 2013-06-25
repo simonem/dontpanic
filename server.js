@@ -194,6 +194,7 @@ socket_listener.sockets.on('connection', function (client) {
 
     client.userid = uuid.v1();
     console.log("Set client ID to "+client.userid);
+
     client.emit('is_connected');
     console.log('**SOCKET_LISTENER** client ' + client.userid + ' connected');
     
@@ -240,7 +241,11 @@ socket_listener.sockets.on('connection', function (client) {
 
 		console.log('**SOCKET_LISTENER** received create command ');
 
-    	console.log('Retrieving template with id: '+c.template_id);
+
+		if(!c.template_id){
+			c = JSON.parse(c);
+		}
+		console.log('Retrieving template with id: '+c.template_id);
     	db.get_template_string(c.template_id, function(result) {
 			var	gametemplate = JSON.parse(result[0].json_string);
 
@@ -266,6 +271,18 @@ socket_listener.sockets.on('connection', function (client) {
         console.log('**SOCKET_LISTENER** received join command ' + c);
         engine.join_game(client, c);
     });
+	
+	client.on('python_join_game', function(c) {
+		for(var g in games){
+			
+			
+			games[g].join_game(client);
+			client.game_id = games[g].id;
+			
+			break;
+		}
+	
+	});
     
     client.on('leave_game', function(c) {
         console.log('**SOCKET_LISTENER** received leave command ' + c);
@@ -278,6 +295,7 @@ socket_listener.sockets.on('connection', function (client) {
         console.log('');
         console.log('**SOCKET_LISTENER** Received:');
         var parsed = JSON.parse(c);
+		console.log(c);
         
         if(client.game_id){
         	var g = games[client.game_id];
