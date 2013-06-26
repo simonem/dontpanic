@@ -27,6 +27,10 @@ def get_active_player():
     theactiveplayer = game_template['active_player']
     return theactiveplayer
 
+def get_cardinfo(cardid):
+    print get_cards_from_player(get_active_player())[cardid]['name']
+    
+    
 def get_actions_left():
     return game_template['players'][get_active_player()]['actions_left']
 
@@ -34,6 +38,8 @@ def get_cards_from_player(playerid):
     if(len(game_template['players']) > playerid ):
         cards = game_template['players'][playerid]['info_cards']
         return cards
+
+
     
 def use_this_card(cardid):
     gamecommand = {
@@ -65,12 +71,19 @@ def on_response():
 def change(arg):
     changes = json.loads(arg)
     if(changes.has_key('timer')):
-        print 'timer is', changes['timer']
-        
+
+        global timer
         timer = changes['timer']
+        print 'timer is', changes['timer']
+
+  
         if(timer == 60):
             get_lcd_info()
-##            use_this_card(0)
+            get_cardinfo(0)
+            use_this_card(0)
+
+        
+        
 
     if(changes.has_key('turn')):
          print 'has turn'
@@ -105,7 +118,7 @@ def change(arg):
     if(changes.has_key('event')):
         print 'has an event'
         
-        print changes['event']['name'] #
+        print changes['event']['name'] 
         
     if(changes.has_key('win')):
         if(changes['win']):
@@ -120,12 +133,13 @@ def change(arg):
     
 
 def starting_game(template):
+        
     
     global game_template
+    
     game_template = json.loads(template)
     global timer
     timer = 0
-
     print game_template.keys()
 
 

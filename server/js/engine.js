@@ -692,7 +692,9 @@ ge.prototype.stop_timer = function(){
 */
 ge.prototype.check_win = function(){
 	var zones = this.map.zones;
+	console.log("the zones " + zones);
 	for(var i = 0; i < zones.length; i++){
+		console.log("panic lvl in zone: " + i + " panic "  + zones[i].panic_level);
 		if(zones[i].panic_level > 0){
 			return false;
 		}
