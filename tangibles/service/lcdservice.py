@@ -3,21 +3,22 @@ from subprocess import *
 from time import sleep
 from datetime import datetime
 
-lcd = Adafruit_CharLCD()
+class LcdService:
+	
+	def __init__(self):
+		global lcd
+		lcd = Adafruit_CharLCD()
+		lcd.begin(16,4)
+	
+	def updateLCD(self,player,turn,apleft,panic):
+		global lcd
+		lcd.clear()
+		lcd.setCursor(0,0)
+		lcd.message("Player: "+str(player))
+		lcd.setCursor(0,1)
+		lcd.message("Turn: "+str(turn))
+		lcd.setCursor(0,2)
+		lcd.message("Actions left: "+str(apleft))
+		lcd.setCursor(0,3)
+		lcd.message("Panic in: "+str(panic))
 
-lcd.begin(16,4)
-
-def updateLCD(player,turn,apleft,panic):
-	lcd.clear()
-	lcd.setCursor(0,0)
-	lcd.message("Player: "+panic)
-	lcd.setCursor(0,1)
-	lcd.message("Turn: "+turn)
-	lcd.setCursor(0,2)
-	lcd.message("Actions left: "+apleft)
-	lcd.setCursor(0,3)
-	lcd.message("Panic in: "+panic)
-
-while 1:
-	updateLCD("simone",1,4,60)
-	sleep(2)
