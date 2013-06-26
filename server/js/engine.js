@@ -743,6 +743,7 @@ function effect(card, g) {
     console.log(card.desc);
     console.log("Effects:");
     console.log(card.effects);
+	changed.zones = [];
 
     for (i = 0; i<effects.length; i++){
         e = effects[i];
@@ -750,7 +751,6 @@ function effect(card, g) {
         console.log(e);
         switch(e.domain){
             case 'zone':
-                changed.zones = [];
                 if(typeof e.affects === 'string'){
                 	var afflicted = e.affects;
                 	e.affects = [];

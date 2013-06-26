@@ -28,7 +28,7 @@ def get_active_player():
     return theactiveplayer
 
 def get_cardinfo(cardid):
-    print get_cards_from_player(get_active_player())[cardid]['name']
+    print get_cards_from_player(get_active_player())[cardid]['desc']
     
     
 def get_actions_left():
