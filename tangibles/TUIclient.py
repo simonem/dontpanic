@@ -1,6 +1,7 @@
 from socketIO_client import SocketIO
 try: import simplejson as json
 except: import json
+from lcdservice import LcdService
 
 class DontpanicClient:
     global socketIO
@@ -75,37 +76,40 @@ class DontpanicClient:
         socketIO.emit('python_join_game')
 
     def change(arg):
+        global timer
+        global lcdscreen
         changes = json.loads(arg)
         if(changes.has_key('timer')):
 
-            global timer
+            
             timer = changes['timer']
-            print 'timer is', changes['timer']
+##            print 'timer is', changes['timer']
 
-    ##  
-    ##        if(timer == 60):
-    ##            get_lcd_info()
-    ##            get_cardinfo(0)
-    ##            use_this_card(0)
+      
+##            if(timer == 60):
+                
+##                get_lcd_info()
+##                get_cardinfo(0)
+##                use_this_card(0)
 
             
             
 
         if(changes.has_key('turn')):
-             print 'has turn'
+##             print 'has turn'
              if(changes.has_key('active_player')):
                  
                  game_template['active_player'] = changes['active_player']
 
 
         if(changes.has_key('players')):
-            print 'has players'
+##            print 'has players'
 
             for player in changes['players']:
                 
                 for i in range(len(game_template['players'])):
+                    print i
                     if(player['id'] == game_template['players'][i]['id']):
-                        
                         game_template['players'][i] = player
                         
 
@@ -136,11 +140,16 @@ class DontpanicClient:
           
             if(changes['lose']):
                 print 'game is lost'
+        active_player = game_template['active_player']
+        turn = game_template['turn']
+        actions_left = game_template['players'][active_player]['actions_left']
+        lcdscreen.updateLCD(active_player,turn,actions_left,timer)
         
 
     def starting_game(template):
             
-        
+        global lcdscreen
+        lcdscreen = LcdService()
         global game_template
         
         game_template = json.loads(template)
