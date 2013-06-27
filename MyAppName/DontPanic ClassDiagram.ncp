@@ -38,7 +38,7 @@
       <Entity type="Class">
         <Name>SClient</Name>
         <Access>Public</Access>
-        <Location left="10" top="565" />
+        <Location left="618" top="33" />
         <Size width="237" height="230" />
         <Collapsed>False</Collapsed>
         <Member type="Field">private TcpClient tcpclnt</Member>
@@ -55,7 +55,7 @@
       <Entity type="Class">
         <Name>Typer</Name>
         <Access>Public</Access>
-        <Location left="72" top="979" />
+        <Location left="56" top="941" />
         <Size width="414" height="216" />
         <Collapsed>False</Collapsed>
         <Member type="Method">public void printText(Cube cube, String text, int x, int y)</Member>
@@ -68,7 +68,7 @@
       <Entity type="Class">
         <Name>CubeInfo</Name>
         <Access>Public</Access>
-        <Location left="567" top="41" />
+        <Location left="159" top="650" />
         <Size width="162" height="216" />
         <Collapsed>False</Collapsed>
         <Member type="Field">int fzone</Member>
@@ -82,7 +82,7 @@
       <Entity type="Class">
         <Name>GameCont</Name>
         <Access>Public</Access>
-        <Location left="578" top="291" />
+        <Location left="650" top="681" />
         <Size width="162" height="281" />
         <Collapsed>False</Collapsed>
         <Member type="Field">int activePlayer</Member>
@@ -102,7 +102,7 @@
       <Entity type="Class">
         <Name>Player</Name>
         <Access>Public</Access>
-        <Location left="531" top="666" />
+        <Location left="564" top="1018" />
         <Size width="162" height="216" />
         <Collapsed>False</Collapsed>
         <Member type="Field">string role</Member>
@@ -118,7 +118,7 @@
       <Entity type="Class">
         <Name>Zone</Name>
         <Access>Public</Access>
-        <Location left="727" top="666" />
+        <Location left="740" top="1018" />
         <Size width="162" height="216" />
         <Collapsed>False</Collapsed>
         <Member type="Field">int panic</Member>
@@ -130,6 +130,99 @@
         <Modifier>None</Modifier>
       </Entity>
     </Entities>
-    <Relationships />
+    <Relationships>
+      <Relationship type="Association" first="4" second="5">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="4" second="6">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="1">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="4">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>484</X>
+          <Y>532</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>586</X>
+          <Y>712</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="1" second="4">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>735</X>
+          <Y>291</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>735</X>
+          <Y>656</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="2">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>118</X>
+          <Y>536</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="3" second="2">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="3" second="4">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+    </Relationships>
   </ProjectItem>
 </Project>

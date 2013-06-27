@@ -31,17 +31,18 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
 
 
-
+/*
 	host: "studsql.idi.ntnu.no",
 	user: "dontpanic_adm",
 	password: "aebu2!Jilu",
 	database: "p_dontpanic",
-	
-/*	host: "localhost",
+	debug:false,*/
+	host: "localhost",
 	user: "root",
 	password: "mirrorntnu",
-	database: "dontpanic4",*/
-	debug:false,
+	database: "dontpanic4",
+	debug,false,
+	
 });
 
 /*
