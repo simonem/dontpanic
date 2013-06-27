@@ -2,12 +2,14 @@ from socketIO_client import SocketIO
 try: import simplejson as json
 except: import json
 from lcdservice import LcdService
+from button import RpiButton
+import time
 
 class DontpanicClient:
     global socketIO
     socketIO = SocketIO('localhost', 8008)
 
-    def _init_(self):
+    def __init__(self):
         something = 0
         
 
@@ -150,11 +152,16 @@ class DontpanicClient:
             
         global lcdscreen
         lcdscreen = LcdService()
+        
         global game_template
         
         game_template = json.loads(template)
         global timer
         timer = 0
+
+        global button
+        button = RPiButton()
+        button.get_button_pressed(socketIO)
         print game_template.keys()
 
 
