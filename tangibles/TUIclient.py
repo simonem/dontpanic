@@ -3,30 +3,39 @@ from button import RPiButton
 try: import simplejson as json
 except: import json
 from lcdservice import LcdService
+from service.printerservice import Printer
+
+
 
 
 global socketIO
 
-socketIO = SocketIO('localhost', 8008)
+
+socketIO = SocketIO('192.168.0.199', 8008)
 
 global game_template
 game_template = {}
 
 def starting_game(template):
 
+	global printer
+	printer = Printer()
+	global lcdscreen
+	lcdscreen = LcdService()
+	global button
+	button = RPiButton(call_next_turn)
 
-    global lcdscreen
-    lcdscreen = LcdService()
-    global button
-    button = RPiButton(get_active_player)
-    
-    global game_template
-        
-    game_template = json.loads(template)
-    
-    button.get_button_pressed()
-    global timer
-    timer = 0
+	global game_template
+		
+	game_template = json.loads(template)
+	
+	#for player in game_template['players']:
+		#printer.print_playercard(player['id'], player['role'])
+
+	#button.get_button_pressed()
+	global timer
+	timer = 0
+	return None
     
 def get_active_player():
     global game_template
@@ -44,6 +53,7 @@ def get_cards_from_player(playerid):
 
 
 def get_cardinfo(cardid):
+
     print get_cards_from_player(get_active_player())[cardid]['desc']
         
         
@@ -54,22 +64,24 @@ def get_actions_left():
 
        
 def get_lcd_info(self):
-    active_player = self.get_active_player()
-    turn = game_template['turn']
-    actions_left = self.get_actions_left()
-    lcd_info = "Player: "
-    lcd_info += str(active_player)
-    lcd_info += "\nTurn: "
-    lcd_info += str(turn)
-    lcd_info += "\nAction points left:"
-    lcd_info += str(actions_left)
-    lcd_info += "\nPanic increase in: "
-    lcd_info += str(timer)
-    print lcd_info
+	active_player = self.get_active_player()
+	turn = game_template['turn']
+	actions_left = self.get_actions_left()
+	lcd_info = "Player: "
+	lcd_info += str(active_player)
+	lcd_info += "\nTurn: "
+	lcd_info += str(turn)
+	lcd_info += "\nAction points left:"
+	lcd_info += str(actions_left)
+	lcd_info += "\nPanic increase in: "
+	lcd_info += str(timer)
+	print lcd_info
         
 def on_response():
-    print 'connected to the server'
-    socketIO.emit('python_join_game')
+	global socketIO
+	print 'connected to the server'
+	socketIO.emit('python_join_game') ## Crashes here
+	return None
 
 
 def call_next_turn():
@@ -92,6 +104,7 @@ def got_message(msg):
 
 def change(arg):
     global timer
+    global printer
     global lcdscreen
     global game_template
     changes = json.loads(arg)
@@ -106,16 +119,21 @@ def change(arg):
         if(changes.has_key('active_player')):
                  
             game_template['active_player'] = changes['active_player']
+	    game_template['turn'] = changes['turn']
 
 
     if(changes.has_key('players')):
 
         for player in changes['players']:
-                
-            for i in range(len(game_template['players'])):
-                
-                if(player['id'] == game_template['players'][i]['id']):
-                    game_template['players'][i] = player
+	    print player
+            print "printing player id"
+	    print player['id']
+	    print "just printed the player"
+	    for tplayer in game_template['players']:
+		#print player['id']
+		print tplayer['id']
+		#if(player['id'] == tplayer['id']):
+		#	tplayer = player
                         
 
             
@@ -131,9 +149,10 @@ def change(arg):
         print 'has options'
             
     if(changes.has_key('event')):
-        print 'has an event'
+        #print 'has an event'
+	printer.print_event(changes['event'])
             
-        print changes['event']['name'] 
+        #print changes['event']['name'] 
             
     if(changes.has_key('win')):
         if(changes['win']):
@@ -149,7 +168,7 @@ def change(arg):
     turn = game_template['turn']
     actions_left = game_template['players'][active_player]['actions_left']
     lcdscreen.updateLCD(active_player,turn,actions_left,timer)
-
+    
 def got_error(arg):
     print 'got an error here'
     print arg
@@ -164,5 +183,4 @@ socketIO.on('start_game', starting_game)
 socketIO.on('msg', got_message)
 
 socketIO.on('error', got_error)
-
-
+socketIO.wait(seconds=120000)
