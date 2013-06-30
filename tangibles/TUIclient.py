@@ -3,30 +3,42 @@ from button import RPiButton
 try: import simplejson as json
 except: import json
 from lcdservice import LcdService
-
-
+from service.printerservice import Printer
+from barcodeservice import BarcodeReader
 global socketIO
 
-socketIO = SocketIO('localhost', 8008)
+
+
+socketIO = SocketIO('192.168.0.199', 8008)
 
 global game_template
 game_template = {}
-
 def starting_game(template):
+	global printed
+	printed = []
+	global printer
+	printer = Printer()
+	global lcdscreen
+	lcdscreen = LcdService()
+	global button
+	button = RPiButton(call_next_turn, use_this_card)
 
-
-    global lcdscreen
-    lcdscreen = LcdService()
-    global button
-    button = RPiButton(get_active_player)
-    
-    global game_template
-        
-    game_template = json.loads(template)
-    
-    button.get_button_pressed()
-    global timer
-    timer = 0
+	global game_template
+		
+	game_template = json.loads(template)
+	
+	
+	for player in game_template['players']:
+		printer.print_playercard((player['id'] + 1), player['role'])
+	
+	activeplayer = game_template['players'][game_template['active_player']]
+	for i in range(len(activeplayer['cardsid'])):
+		printer.print_infocard(activeplayer['info_cards'][i], activeplayer['cardsid'][i], (activeplayer['id']+1))
+		printed.append(activeplayer['cardsid'][i])
+	button.updateList(activeplayer['cardsid'])
+	global timer
+	timer = 0
+	return None
     
 def get_active_player():
     global game_template
@@ -44,6 +56,7 @@ def get_cards_from_player(playerid):
 
 
 def get_cardinfo(cardid):
+
     print get_cards_from_player(get_active_player())[cardid]['desc']
         
         
@@ -53,23 +66,25 @@ def get_actions_left():
 
 
        
-def get_lcd_info(self):
-    active_player = self.get_active_player()
-    turn = game_template['turn']
-    actions_left = self.get_actions_left()
-    lcd_info = "Player: "
-    lcd_info += str(active_player)
-    lcd_info += "\nTurn: "
-    lcd_info += str(turn)
-    lcd_info += "\nAction points left:"
-    lcd_info += str(actions_left)
-    lcd_info += "\nPanic increase in: "
-    lcd_info += str(timer)
-    print lcd_info
+def print_lcd_info(self):
+	active_player = self.get_active_player()
+	turn = game_template['turn']
+	actions_left = self.get_actions_left()
+	lcd_info = "Player: "
+	lcd_info += str(active_player)
+	lcd_info += "\nTurn: "
+	lcd_info += str(turn)
+	lcd_info += "\nAction points left:"
+	lcd_info += str(actions_left)
+	lcd_info += "\nPanic increase in: "
+	lcd_info += str(timer)
+	print lcd_info
         
 def on_response():
-    print 'connected to the server'
-    socketIO.emit('python_join_game')
+	global socketIO
+	print 'connected to the server'
+	socketIO.emit('python_join_game') 
+	return None
 
 
 def call_next_turn():
@@ -78,13 +93,13 @@ def call_next_turn():
     socketIO.emit('game_command', json.dumps(endturncommand))
 
 def use_this_card(cardid):
+    print 'got a cardid', cardid
     gamecommand = {
-        "type":"use_card",
-        "card":cardid
-        }
+	"type":"use_card",
+	"card":cardid
+    }
     socketIO.emit('game_command', json.dumps(gamecommand))
-            
-
+    return None
 def got_message(msg):
         
     print 'server said', msg
@@ -92,55 +107,50 @@ def got_message(msg):
 
 def change(arg):
     global timer
+    global printed
+    global printer
     global lcdscreen
+    global button
     global game_template
     changes = json.loads(arg)
     if(changes.has_key('timer')):
-
-            
         timer = changes['timer']
-     
-            
 
     if(changes.has_key('turn')):
         if(changes.has_key('active_player')):
-                 
             game_template['active_player'] = changes['active_player']
-
-
+	    game_template['turn'] = changes['turn']
+	    if(changes.has_key('players')):
+		for player in changes['players']:
+			if(player['id'] == game_template['active_player']):
+				if(player.has_key('info_cards')):
+					for i in range(len(player['cardsid'])):
+						if(printed.count(player['cardsid'][i]) < 1):
+							printer.print_infocard(player['info_cards'][i], player['cardsid'][i], (player['id']+1))
+							printed.append(player['cardsid'][i])
+					button.updaList(player['cardsid'])
     if(changes.has_key('players')):
-
         for player in changes['players']:
-                
-            for i in range(len(game_template['players'])):
-                
-                if(player['id'] == game_template['players'][i]['id']):
-                    game_template['players'][i] = player
-                        
-
-            
-
+	    if(player != None):
+	    	if(player.has_key('id')):
+			for i in range(len(game_template['players'])):
+				if(player['id'] == game_template['players'][i]['id']):
+					game_template['players'][i] = player
     if(changes.has_key('zones')):
         print 'has zones'
             
     if(changes.has_key('nodes')):
         print 'has nodes'
-            
-
     if(changes.has_key('options')):
         print 'has options'
             
     if(changes.has_key('event')):
         print 'has an event'
-            
-        print changes['event']['name'] 
+	printer.print_event(changes['event'])
             
     if(changes.has_key('win')):
-        if(changes['win']):
-            print 'game is won'
-           
-
-            
+	if(changes['win']):
+		print 'game is won'
     if(changes.has_key('lose')):
           
         if(changes['lose']):
@@ -148,8 +158,7 @@ def change(arg):
     active_player = game_template['active_player']
     turn = game_template['turn']
     actions_left = game_template['players'][active_player]['actions_left']
-    lcdscreen.updateLCD(active_player,turn,actions_left,timer)
-
+    lcdscreen.updateLCD(active_player + 1,turn,actions_left,timer)
 def got_error(arg):
     print 'got an error here'
     print arg
@@ -164,5 +173,4 @@ socketIO.on('start_game', starting_game)
 socketIO.on('msg', got_message)
 
 socketIO.on('error', got_error)
-
-
+socketIO.wait(seconds=120000)
