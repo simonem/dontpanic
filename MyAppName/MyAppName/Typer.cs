@@ -87,12 +87,115 @@ namespace Dontpanic
 		return 30;
 		}
 
+		/**
+		 * Prints a small black text to a cube
+		 */
+		public void printSText(Cube cube, string text, int x, int y){
+			int offset = 0;
+			foreach(char c in text.ToLower().ToCharArray()){
+				offset = offset + printSChar(new Color(0,0,0), cube, c, x+offset, y);
 
+
+			}
+		}
+		/**
+		 * this method is for drawing smaller numbers than the one in the next method
+		 */
+		public int printSChar(Color chr_clr, Cube cube, char d, int cX, int cY){
+
+
+			switch (d) {
+			case 'a':
+				cube.FillRect (chr_clr, cX + 0, cY + 5, 3, 6);
+				cube.FillRect (chr_clr, cX + 7, cY + 5, 3, 6);
+				cube.FillRect (chr_clr, cX + 3, cY + 2, 4, 3);
+				cube.FillRect (chr_clr, cX + 3, cY + 11, 9, 3);
+
+				return 13;
+			case 'n':
+
+				cube.FillRect (chr_clr, cX + 0, cY + 0, 3, 14);
+				cube.FillRect (chr_clr, cX + 3, cY + 3, 6, 3);
+				cube.FillRect (chr_clr, cX + 6, cY + 6, 3, 8);
+
+				return 10;
+			case '0':
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); //1
+				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4);//2
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2);//3
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2);//5
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4);//6
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4);//7
+				return 9;
+			case '1':
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4);//6
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4);//7
+				return 9;
+			case '2':
+				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4);//2
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2);//3
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2);//4
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2);//5
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4);//6
+				return 9;
+			case '3':
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2);//3
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2);//4
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2);//5
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4);//6
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4);//7
+				return 9;
+			case '4':
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); //1
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2);//4
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4);//6
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4);//7
+				return 9;
+			case '5':
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); //1
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2);//3
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2);//4
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2);//5
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4);//7
+				return 9;
+			case '6':
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); //1
+				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4);//2
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2);//3
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2);//4
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2);//5
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4);//7
+				return 9;
+			case '7':
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2);//3
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4);//6
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4);//7
+				return 9;
+			case '8':
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); //1
+				cube.FillRect (chr_clr, cX + 0, cY + 8, 2, 4);//2
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2);//3
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2);//4
+				cube.FillRect (chr_clr, cX + 2, cY + 12, 4, 2);//5
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4);//6
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4);//7
+				return 9;
+			case '9':
+				cube.FillRect (chr_clr, cX + 0, cY + 2, 2, 4); //1
+				cube.FillRect (chr_clr, cX + 2, cY + 0, 4, 2);//3
+				cube.FillRect (chr_clr, cX + 2, cY + 6, 4, 2);//4
+				cube.FillRect (chr_clr, cX + 6, cY + 2, 2, 4);//6
+				cube.FillRect (chr_clr, cX + 6, cY + 8, 2, 4);//7
+				return 9;
+			}
+			return 5;
+		}
 		/**
 		 * Draws a char to a cube
 		 * 
 		 * this method is unfinished, only the numbers and the sign '-' is working as intended at the moment
 		 * 
+		 * the n and the a is ok aswell
 		 */
 		public int printChar( Color chr_clr, Cube cube, char d, int cX, int cY){
 
@@ -328,11 +431,11 @@ namespace Dontpanic
 				return 31;
 			case 'n':
 
-				cube.FillRect (chr_clr, cX + 0, cY + 3, 1, 6);
-				cube.FillRect (chr_clr, cX + 1, cY + 4, 2, 1);
-				cube.FillRect (chr_clr, cX + 3, cY + 5, 1, 4);
+				cube.FillRect (chr_clr, cX + 0, cY + 13, 3, 15);
+				cube.FillRect (chr_clr, cX + 3, cY + 16, 6, 3);
+				cube.FillRect (chr_clr, cX + 6, cY + 19, 3, 9);
 		
-				return 5;
+				return 10;
 			case 'o':
 
 

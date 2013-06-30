@@ -10,10 +10,14 @@ namespace Dontpanic
 
 		// fzone is the zone currently being used by the move people cube
 		// amount is how many times the cube wants to move people in one go  THIS MIGHT BE REMOVED AT A LATER STAGE DEPENDING ON THE RULES OF THE GAME
-		// onTheMove
+		// onTheMove is how many is currently residing in the move player cube
 		public int fzone = -1; 
 		public int amount = 0;
 		public int onTheMove = 0;
+		public bool activeplayerismoving = false;
+
+
+
 
 
 		public CubeInfo()
@@ -95,7 +99,8 @@ namespace Dontpanic
 		 */
 		public void Draw(Cube cube, int player, GameCont GC){
 
-
+			//text to be printed under the roleimage
+			string textUnderRoleImg =  "n" + GC.getPlayer (player).getNodeid () + " ";
 
 
 			Typer typer = new Typer ();
@@ -106,7 +111,12 @@ namespace Dontpanic
 			
 				if (player == GC.getActivePlayer ()) {
 					cube.FillScreen (new Color(255,255,255));
-					typer.printText (cube, "" + GC.getActionsLeft (), 0, 0);
+
+					// adds actions left to the undertext
+					textUnderRoleImg += "a" + GC.getActionsLeft ();
+
+					//this draws the amount of actions left, redundant since its beeing drawn on another display
+					//typer.printText (cube, "" + GC.getActionsLeft (), 0, 0);
 				} else {
 					cube.FillScreen (new Color(100,100,100));
 				}
@@ -118,8 +128,9 @@ namespace Dontpanic
 				cube.Image (GC.getPlayer (player).getRole (), Cube.SCREEN_WIDTH / 4, Cube.SCREEN_HEIGHT / 4, 0, 0, 48, 48, 0, 0);
 
 
-				// Draw nodeid
-				typer.printText (cube, "" + GC.getPlayer (player).getNodeid (), Cube.SCREEN_WIDTH / 4, Cube.SCREEN_HEIGHT / 2);
+				// Draw nodeid, drawing with smaller text otherwise it intersects the role image
+				// comment out this to remove the playernode and the actions left on the cube
+				typer.printSText (cube,textUnderRoleImg, Cube.SCREEN_WIDTH / 4, (Cube.SCREEN_HEIGHT / 4 ) + 48); //48 is the size of the roleimage
 
 
 			
@@ -182,6 +193,15 @@ namespace Dontpanic
 
 
 
+				}
+				if(activeplayerismoving && GC.getActivePlayer() == player){
+					// this is the active player and its moving so we color the screen blue 
+					// TODO : add so it tells the active player that it needs to push to localize
+
+					//if you have an image to use then comment out the cube.Fillscreen and decomment cube.image and change the name of the image.
+					cube.FillScreen (new Color(50,70,240));
+
+					//cube.Image ("name of the image goes here", 0, 0, 0, 0, 128, 128, 0, 0);
 				}
 				cube.Paint ();
 

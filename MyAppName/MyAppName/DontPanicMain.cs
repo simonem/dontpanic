@@ -25,8 +25,9 @@ namespace Dontpanic
 
 		/**
 		 * this variable is used for selecting the source Y on the images when there are other languages available 
+		 * english = 0, italian = 1, norwegian = 2
 		 */
-		int language = 1;
+		int language = 0;
 
 		/**
 		 * this holds the zoneid of the zone that is connected to the decrease panic cube, so it does not have to be calculated on each step
@@ -71,6 +72,7 @@ namespace Dontpanic
 			}
 			for(int i = 0; i < 4; i++){
 				cubes[i].ButtonEvent += OnMovePlayerClick;
+				cubes [i].TiltEvent += TiltEvent;
 			}
 
 			// this cube (cubes[4]) is the cube that will be used to decrease panic in zones.
@@ -266,13 +268,15 @@ namespace Dontpanic
 		public void OnMovePlayerClick(Cube c, bool pressed){
 
 
+
 			if(cubes[gameContainer.getActivePlayer()].Equals(c) && pressed){
+				cubeHandler.activeplayerismoving = false;
 
 
 				int node = c.Tilt [0] * 3 + c.Tilt [1];
 				scli.move(gameContainer.getActivePlayer(), node);
 				if(!movePlayer.IsPlaying){
-					movePlayer.Play (1);
+					movePlayer.Play (100f,1);
 				}
 			}	
 		}
@@ -327,7 +331,7 @@ namespace Dontpanic
 				if(gameContainer.getActionsLeft() > 0){
 					
 					cube1.Image ("DPPanic", 0, 0, 0, language * 128, 128, 128, 0, 0);
-					typer.printText (cube1, "" + removed , 80, 100);
+					typer.printText (cube1, "" + removed , 90, 80);
 					typer.printText (cube1, "" +  previouspanic, 50, 40);
 					cube1.Paint ();
 					cube1.ClearEvents ();
@@ -357,7 +361,7 @@ namespace Dontpanic
 			c.Image ("faceDP", 0, 0, 0, 0, 128, 128, 0, 0);
 			c.Paint ();
 			if(!decPanic.IsPlaying){
-				decPanic.Play (1);
+				decPanic.Play (100f, 1);
 			}
 
 			scli.decpanic (connectedZonePanic);
@@ -433,7 +437,7 @@ namespace Dontpanic
 					cube1.Paint ();
 
 					if (!movePeople.IsPlaying) {
-						movePeople.Play (1);
+						movePeople.Play (100f, 1);
 					}
 				}	
 			}
@@ -461,6 +465,15 @@ namespace Dontpanic
 			}
 
 
+		}
+		/**
+		 * Event handler for when the 
+		 */
+		public void TiltEvent(Cube c, int x, int y, int z){
+			//the cube has bee tilted and needs to be pressed to update
+			if(c.Equals(cubes[gameContainer.getActivePlayer()])){
+				cubeHandler.activeplayerismoving = true;
+			}
 		}
 
 	

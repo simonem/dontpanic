@@ -25,7 +25,7 @@ namespace Dontpanic
 			Log.Debug("Connecting....");
 
 			//server ipadress
-			tcpclnt.Connect ("127.0.0.1",6969);
+			tcpclnt.Connect ("192.168.0.199", 6969);
 
 			Log.Debug("Connected");
 			ready = true;
@@ -44,7 +44,7 @@ namespace Dontpanic
 
 				ready = false;
 
-				Log.Debug("Sending: " + msg);
+				Log.Debug("Sending: " + msg); 
 
 				ASCIIEncoding asen = new ASCIIEncoding();
 
