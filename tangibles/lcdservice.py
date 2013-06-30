@@ -6,17 +6,11 @@ from datetime import datetime
 class LcdService:
 	
 	def __init__(self):
-		#print 'placeholder'
 		global lcd
 		lcd = Adafruit_CharLCD()
 		lcd.begin(16,4)
 	
 	def updateLCD(self,player,turn,apleft,panic):
-		#print 'placeholderUPDATELCD'
-		#print 'player: ' + str(player)
-		#print 'turn: ' + str(turn)
-		#print 'actions left: ' + str(apleft)
-		#print 'panic in: ' + str(panic)
 		global lcd		
 		lcd.clear()
 		lcd.setCursor(0,0)
