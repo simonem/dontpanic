@@ -133,6 +133,9 @@ namespace Dontpanic
 				typer.printSText (cube,textUnderRoleImg, Cube.SCREEN_WIDTH / 4, (Cube.SCREEN_HEIGHT / 4 ) + 48); //48 is the size of the roleimage
 
 
+				// Draws the id of the player in the top left of the cube
+				typer.printText(cube, "" + (player +1), 0,0);
+
 			
 
 				// harcoded draw zones

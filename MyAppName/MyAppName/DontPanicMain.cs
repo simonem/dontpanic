@@ -23,6 +23,15 @@ namespace Dontpanic
 		Sound decPanic;
 		Sound movePeople;
 
+		// theese are the imagenames
+		string moveIdle = "DPBump";
+		string moveConnect = "movePeople";
+		string moveDetach = "DPBump2";
+		string decpanicPush = "faceDP";
+		string decpanicConnect = "DPPanic";
+		string decpanicDetach = "DPPanic2";
+
+
 		/**
 		 * this variable is used for selecting the source Y on the images when there are other languages available 
 		 * english = 0, italian = 1, norwegian = 2
@@ -78,6 +87,7 @@ namespace Dontpanic
 			// this cube (cubes[4]) is the cube that will be used to decrease panic in zones.
 			cubes[4].NeighborAddEvent += OnDecreasePanicConnect; // adding event handler to the dec panic cube
 			cubes[4].FillScreen(new Color(255,100,100)); // adding a bg color
+			cubes [4].Image (decpanicDetach, 0, 0, 0, language, 128, 128, 0, 0);
 			cubes [4].Paint ();
 
 			// this cube (cubes[5]) is the cube that will be used to move people from one zone to another.
@@ -85,7 +95,7 @@ namespace Dontpanic
 			cubes [5].ButtonEvent += OnCancelMoveClick;
 			cubes[5].NeighborRemoveEvent += OnMovePeopleDetach;
 			cubes [5].FillScreen (new Color(100,100,0)); // adding a bg color
-			cubes [5].Image ("DPBump", 0, 0, 0, language * 128, 128, 128, 0, 0);
+			cubes [5].Image (moveIdle, 0, 0, 0, language * 128, 128, 128, 0, 0);
 			cubes [5].Paint ();
 		
 			scli = new SClient ();
@@ -292,7 +302,7 @@ namespace Dontpanic
 				cubeHandler.fzone = -1;
 
 				c.FillScreen (new Color(100,100,0));
-				c.Image ("DPBump", 0, 0, 0, language * 128, 128, 128, 0, 0);
+				c.Image (moveIdle, 0, 0, 0, language * 128, 128, 128, 0, 0);
 				c.Paint ();
 			}
 
@@ -330,7 +340,7 @@ namespace Dontpanic
 
 				if(gameContainer.getActionsLeft() > 0){
 					
-					cube1.Image ("DPPanic", 0, 0, 0, language * 128, 128, 128, 0, 0);
+					cube1.Image (decpanicConnect, 0, 0, 0, language * 128, 128, 128, 0, 0);
 					typer.printText (cube1, "" + removed , 90, 80);
 					typer.printText (cube1, "" +  previouspanic, 50, 40);
 					cube1.Paint ();
@@ -358,7 +368,7 @@ namespace Dontpanic
 
 			c.FillScreen(new Color(255,100,100));
 			
-			c.Image ("faceDP", 0, 0, 0, 0, 128, 128, 0, 0);
+			c.Image (decpanicPush, 0, 0, 0, 0, 128, 128, 0, 0);
 			c.Paint ();
 			if(!decPanic.IsPlaying){
 				decPanic.Play (100f, 1);
@@ -375,7 +385,7 @@ namespace Dontpanic
 		public void OnDecreasePanicDetach(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2)  {
 			connectedZonePanic = -1;
 			cube1.FillScreen(new Color(255,100,100));
-			cube1.Image ("DPPanic2", 0, 0, 0, language * 128, 128, 128, 0, 0);
+			cube1.Image (decpanicDetach, 0, 0, 0, language * 128, 128, 128, 0, 0);
 			cube1.Paint ();
 			cube1.ClearEvents ();
 			cube1.NeighborAddEvent += OnDecreasePanicConnect;
@@ -419,7 +429,7 @@ namespace Dontpanic
 						//typer.printText (cube1, "" + zone, 20, 20);
 						//typer.printText (cube1, "" + (eachmove * cubeHandler.amount), 20, 40);
 						
-						cube1.Image ("movePeople", 0, 0, 0, 0, 128, 128, 0, 0);
+						cube1.Image (moveConnect, 0, 0, 0, 0, 128, 128, 0, 0);
 						cube1.Paint ();
 					}
 
@@ -433,7 +443,7 @@ namespace Dontpanic
 					cubeHandler.amount = 0;
 					cubeHandler.fzone = -1;
 					cube1.FillScreen(new Color(100,100,0));
-					cube1.Image ("movePeople", 0, 0, 0, 0, 128, 128, 0, 0);
+					cube1.Image (moveConnect, 0, 0, 0, 0, 128, 128, 0, 0);
 					cube1.Paint ();
 
 					if (!movePeople.IsPlaying) {
@@ -453,14 +463,14 @@ namespace Dontpanic
 				
 				cube1.FillScreen (new Color(100,100,0));
 
-				cube1.Image ("DPBump2", 0, 0, 0, language *128, 128, 128, 0, 0);
+				cube1.Image (moveDetach, 0, 0, 0, language *128, 128, 128, 0, 0);
 				cube1.Paint ();
 
 
 			} else {
 				cube1.FillScreen (new Color(100,100,0));
 
-				cube1.Image ("DPBump", 0, 0, 0, language*128, 128, 128, 0, 0);
+				cube1.Image (moveIdle, 0, 0, 0, language*128, 128, 128, 0, 0);
 				cube1.Paint ();
 			}
 
