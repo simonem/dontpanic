@@ -4,7 +4,6 @@ try: import simplejson as json
 except: import json
 from lcdservice import LcdService
 from service.printerservice import Printer
-from barcodeservice import BarcodeReader
 global socketIO
 
 

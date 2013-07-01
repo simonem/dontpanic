@@ -56,18 +56,22 @@ var ge = module.exports = function (id, client, template,template_id, id_replay)
 	//Players
 
 	this.players = [];
+	this.unique_cards = 0;
 	var player;
 	var len = template.players.length;
 
     for(var i = 0; i < len; i++){
 		var tplayer = template.players[i]
 		player = new ge.Player(tplayer.id, tplayer.user, tplayer.node , tplayer.color, tplayer.role, tplayer.actions_left);
-
+		player.cardsid = []
 		player.info_cards.push(this.info_cards[Math.floor((Math.random()*(this.info_cards.length)))]);
-    	
+    		player.cardsid.push(this.unique_cards);
+		this.unique_cards++;
     	//First player gets one extra card
 		if(i === 0){
 			player.info_cards.push(this.info_cards[Math.floor((Math.random()*(this.info_cards.length)))]);
+			player.cardsid.push(this.unique_cards);
+			this.unique_cards++;
 		}
     	this.players.push(player);
     }
@@ -231,6 +235,11 @@ ge.prototype.command = function(client, c){
     
 
     switch (c.type) {
+
+	case 'decrease_actions':
+		if(players[this.active_player].can_update_actions(this, -1)){
+			players[this.active_player].update_actions(this, -1);
+		}
     
         case 'new_timer':
             this.stop_timer();
@@ -397,6 +406,7 @@ ge.prototype.command = function(client, c){
 		case 'use_card':
 			console.log("was here and trying to use card " + c.card);
 			if(!this.used_info_card || client.is_gm){
+				players[this.active_player].cardsid.splice(c.card,1);
 				var ic = players[this.active_player].info_cards.splice(c.card,1)[0];
 				changed = effect(ic, this);
 		        changed.players = changed.players ? changed.players.push(players[this.active_player]) :  [players[this.active_player]];
@@ -466,6 +476,8 @@ ge.prototype.command = function(client, c){
 			if(this.cards_left > 0){
 				ap.info_cards.push(this.info_cards[Math.floor((Math.random()*(this.info_cards.length)))]);
 				this.cards_left -= 1;
+				ap.cardsid.push(this.unique_cards);
+				this.unique_cards++;
 			}
 
 

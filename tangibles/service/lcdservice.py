@@ -11,7 +11,7 @@ class LcdService:
 		lcd.begin(16,4)
 	
 	def updateLCD(self,player,turn,apleft,panic):
-		global lcd
+		global lcd		
 		lcd.clear()
 		lcd.setCursor(0,0)
 		lcd.message("Player: "+str(player))

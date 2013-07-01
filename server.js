@@ -13,7 +13,6 @@ var http		= require('http'),
     uuid        = require('node-uuid'),
     db			= require('./database.js');
 	net			= require('net');
-
  /* Configuration of express server:
 
 Makes the ejs module handle all html files.
@@ -382,7 +381,8 @@ net.createServer(function(sock) {
         console.log('CLOSED: ' + sock.remoteAddress +' '+ sock.remotePort);
     });
     
-}).listen(PORT, HOST);
+}).listen(PORT);
 
 console.log('Server listening on ' + HOST +':'+ PORT);
+
 
