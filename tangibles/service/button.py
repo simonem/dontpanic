@@ -39,6 +39,7 @@ class RPiButton:
 				isNotReading = True
 				for i in range(len(blist)):
 					if(blist[i] == int(code)):
+						os.system('mpg321 success.mp3 &')
 						use_card_function(i)
     def updateList(self, list):
 	global blist

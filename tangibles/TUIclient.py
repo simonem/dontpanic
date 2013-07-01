@@ -1,8 +1,8 @@
 from socketIO_client import SocketIO
-from button import RPiButton
+from service.button import RPiButton
 try: import simplejson as json
 except: import json
-from lcdservice import LcdService
+from service.lcdservice import LcdService
 from service.printerservice import Printer
 global socketIO
 
