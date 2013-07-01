@@ -1,8 +1,8 @@
 from socketIO_client import SocketIO
-from button import RPiButton
+from service.button import RPiButton
 try: import simplejson as json
 except: import json
-from lcdservice import LcdService
+from service.lcdservice import LcdService
 from service.printerservice import Printer
 global socketIO
 
@@ -20,7 +20,7 @@ def starting_game(template):
 	global lcdscreen
 	lcdscreen = LcdService()
 	global button
-	button = RPiButton(call_next_turn, use_this_card)
+	button = RPiButton(call_next_turn, use_this_card, remove_action)
 
 	global game_template
 		
@@ -91,6 +91,12 @@ def call_next_turn():
     endturncommand = { 'type':'end_turn'} 
     socketIO.emit('game_command', json.dumps(endturncommand))
 
+def remove_action():
+    print 'removing one action'
+    gamecommand = {
+	"type":"decrease_actions"
+    }
+    socketIO.emit('game_command', json.dumps(gamecommand))
 def use_this_card(cardid):
     print 'got a cardid', cardid
     gamecommand = {
@@ -150,10 +156,12 @@ def change(arg):
     if(changes.has_key('win')):
 	if(changes['win']):
 		print 'game is won'
+		lcdscreen.game_is_won()
     if(changes.has_key('lose')):
           
         if(changes['lose']):
             print 'game is lost'
+	    lcdscreen.game_is_lost()
     active_player = game_template['active_player']
     turn = game_template['turn']
     actions_left = game_template['players'][active_player]['actions_left']
