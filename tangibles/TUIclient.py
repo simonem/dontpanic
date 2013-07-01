@@ -127,7 +127,7 @@ def change(arg):
 						if(printed.count(player['cardsid'][i]) < 1):
 							printer.print_infocard(player['info_cards'][i], player['cardsid'][i], (player['id']+1))
 							printed.append(player['cardsid'][i])
-					button.updaList(player['cardsid'])
+					button.updateList(player['cardsid'])
     if(changes.has_key('players')):
         for player in changes['players']:
 	    if(player != None):
