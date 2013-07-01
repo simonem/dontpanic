@@ -381,8 +381,14 @@ net.createServer(function(sock) {
         console.log('CLOSED: ' + sock.remoteAddress +' '+ sock.remotePort);
     });
     
-}).listen(PORT);
+}).listen(PORT, HOST);
 
 console.log('Server listening on ' + HOST +':'+ PORT);
 
-
+var zserver = new zerorpc.Server({
+	hello: function(name, reply){
+		reply(null, "hello, " + name, false);
+	}
+});
+zserver.bind("tcp://0.0.0.0:4242");
+console.log("zeroRPC server runnning on 127.0.0.1:4242");

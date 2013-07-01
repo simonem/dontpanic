@@ -32,10 +32,10 @@ var connection = mysql.createConnection({
 
 
 
-	host: "studsql.idi.ntnu.no",
-	user: "dontpanic_adm",
-	password: "aebu2!Jilu",
-	database: "p_dontpanic",
+	host: "localhost",
+	user: "root",
+	password: "raspberry",
+	database: "test2",
 	
 /*	host: "localhost",
 	user: "root",
