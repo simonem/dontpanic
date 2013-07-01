@@ -15,14 +15,16 @@ namespace Dontpanic
 		public int amount = 0;
 		public int onTheMove = 0;
 		public bool activeplayerismoving = false;
+		public bool activeplayerwrongmove = false;
+
+
+		public int language = 0;
 
 
 
-
-
-		public CubeInfo()
+		public CubeInfo(int language)
 		{
-
+			this.language = language;
 		}
 
 
@@ -199,12 +201,13 @@ namespace Dontpanic
 				}
 				if(activeplayerismoving && GC.getActivePlayer() == player){
 					// this is the active player and its moving so we color the screen blue 
-					// TODO : add so it tells the active player that it needs to push to localize
+					cube.FillScreen (new Color(255,255,255));
 
-					//if you have an image to use then comment out the cube.Fillscreen and decomment cube.image and change the name of the image.
-					cube.FillScreen (new Color(50,70,240));
+					cube.Image ("pushtopdate", 0, 0, 0, language, 128, 128, 0, 0);
 
-					//cube.Image ("name of the image goes here", 0, 0, 0, 0, 128, 128, 0, 0);
+				}
+				if (activeplayerwrongmove && GC.getActivePlayer() == player) {
+					cube.Image ("wrongmove", 0, 0, 0, language, 128, 128, 0, 0);
 				}
 				cube.Paint ();
 

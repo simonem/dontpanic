@@ -16,7 +16,7 @@ namespace Dontpanic
 		SClient scli;
 		GameCont gameContainer;
 		Cube[] cubes;
-		CubeInfo cubeHandler = new CubeInfo();
+		CubeInfo cubeHandler;
 		int frame = 20;
 		Sound movePlayer;
 		Sound timer10sec;
@@ -30,6 +30,8 @@ namespace Dontpanic
 		string decpanicPush = "faceDP";
 		string decpanicConnect = "DPPanic";
 		string decpanicDetach = "DPPanic2";
+		string pushtoupdate = "pushtopdate";
+		string wrongmove = "wrongmove";
 
 
 		/**
@@ -66,6 +68,7 @@ namespace Dontpanic
 			decPanic = Sounds.CreateSound ("dec_panic");
 			movePeople = Sounds.CreateSound("move_people");
 
+			cubeHandler = new CubeInfo (language);
 
 			cubes = CubeSet.toArray();
 		
@@ -99,6 +102,7 @@ namespace Dontpanic
 			cubes [5].Paint ();
 		
 			scli = new SClient ();
+			gameContainer = scli.getGameInfo ();
     	}
 
 
@@ -112,9 +116,13 @@ namespace Dontpanic
 
 			if (scli.isReady() && frame >= 20) {
 				frame = 0;
-
+				//the next integer are to make sure the wrongmoveimage and pushtoupdate are removed if the next turn has been called
+				int curactiveplayer = gameContainer.activePlayer;
 				gameContainer = scli.getGameInfo ();
-
+				if (curactiveplayer != gameContainer.activePlayer){
+					cubeHandler.activeplayerwrongmove = false;
+					cubeHandler.activeplayerismoving = false;
+				}
 				if(gameContainer.getTimer() < 10){
 					if(!timer10sec.IsPlaying){
 						timer10sec.Play (1);
@@ -267,6 +275,61 @@ namespace Dontpanic
 
 		}
 
+		/**
+		 * method to figure out if a move from node "currentnode" to node "node" is allowed
+		 */ 
+		public bool isMoveAllowed(int node, int currentnode){
+			switch (currentnode){
+			case 0:
+				if(node == 1 || node == 2 || node == 7){
+					return true;
+				}
+				break;
+			case 1:
+				if(node == 0 || node == 2 || node == 3){
+					return true;
+				}
+				break;
+			case 2:
+				if (node == 0 || node == 1 || node == 3 || node == 7) {
+					return true;
+				}
+				break;
+			case 3:
+				if(node == 1 || node == 2 || node == 6 || node == 8){
+					return true;
+				}
+				break;
+			case 4:
+				if (node == 8 || node == 5){
+					return true;
+				}
+				break;
+			case 5:
+				if (node == 4 || node == 6 || node == 7) {
+					return true;
+				}
+				break;
+			case 6:
+				if( node == 3 || node == 5 || node == 7 || node == 8){
+					return true;
+				}
+				break;
+			case 7:
+				if(node == 0 || node == 2 || node == 6 || node == 5){
+					return true;
+				}
+				break;
+			case 8:
+				if(node == 3 || node == 4 || node == 6){
+					return true;
+				}
+				break;
+			}
+			return false;
+
+		}
+
 
 		/**
 		 * event called when a player coube is pressed
@@ -284,9 +347,21 @@ namespace Dontpanic
 
 
 				int node = c.Tilt [0] * 3 + c.Tilt [1];
-				scli.move(gameContainer.getActivePlayer(), node);
-				if(!movePlayer.IsPlaying){
-					movePlayer.Play (100f,1);
+				int currentnode = gameContainer.getPlayer (gameContainer.activePlayer).getNodeid ();
+
+				if(node != currentnode){// do nothing and let it repaint if there is no intention to move
+
+					if(gameContainer.actionsLeft > 0 && isMoveAllowed(node , currentnode)){ // the move requested is possible
+						scli.move(gameContainer.getActivePlayer(), node);
+						if(!movePlayer.IsPlaying){
+							movePlayer.Play (100f,1);
+
+						}
+					}
+					else { // the requested move is impossible
+						c.Image (wrongmove, 0, 0, 0, language, 128, 128, 0, 0);
+						cubeHandler.activeplayerwrongmove = true;
+					}
 				}
 			}	
 		}
@@ -482,7 +557,10 @@ namespace Dontpanic
 		public void TiltEvent(Cube c, int x, int y, int z){
 			//the cube has bee tilted and needs to be pressed to update
 			if(c.Equals(cubes[gameContainer.getActivePlayer()])){
+				c.FillScreen (new Color(255,255,255));
+				c.Image (pushtoupdate, 0, 0, 0, language, 128, 128, 0, 0);
 				cubeHandler.activeplayerismoving = true;
+				cubeHandler.activeplayerwrongmove = false;
 			}
 		}
 
