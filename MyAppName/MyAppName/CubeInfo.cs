@@ -191,7 +191,7 @@ namespace Dontpanic
 					break;
 
 				case 8:
-					drawZone (cube, GC.getZone (3), 3, 3);
+					drawZone (cube, GC.getZone (3), 2, 3);
 					drawZone (cube, GC.getZone (4), 4, 4);
 
 					break;
