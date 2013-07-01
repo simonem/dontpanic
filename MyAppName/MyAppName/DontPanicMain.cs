@@ -16,12 +16,23 @@ namespace Dontpanic
 		SClient scli;
 		GameCont gameContainer;
 		Cube[] cubes;
-		CubeInfo cubeHandler = new CubeInfo();
+		CubeInfo cubeHandler;
 		int frame = 20;
 		Sound movePlayer;
 		Sound timer10sec;
 		Sound decPanic;
 		Sound movePeople;
+
+		// theese are the imagenames
+		string moveIdle = "DPBump";
+		string moveConnect = "movePeople";
+		string moveDetach = "DPBump2";
+		string decpanicPush = "faceDP";
+		string decpanicConnect = "DPPanic";
+		string decpanicDetach = "DPPanic2";
+		string pushtoupdate = "pushtopdate";
+		string wrongmove = "wrongmove";
+
 
 		/**
 		 * this variable is used for selecting the source Y on the images when there are other languages available 
@@ -57,6 +68,7 @@ namespace Dontpanic
 			decPanic = Sounds.CreateSound ("dec_panic");
 			movePeople = Sounds.CreateSound("move_people");
 
+			cubeHandler = new CubeInfo (language);
 
 			cubes = CubeSet.toArray();
 		
@@ -78,6 +90,7 @@ namespace Dontpanic
 			// this cube (cubes[4]) is the cube that will be used to decrease panic in zones.
 			cubes[4].NeighborAddEvent += OnDecreasePanicConnect; // adding event handler to the dec panic cube
 			cubes[4].FillScreen(new Color(255,100,100)); // adding a bg color
+			cubes [4].Image (decpanicDetach, 0, 0, 0, language, 128, 128, 0, 0);
 			cubes [4].Paint ();
 
 			// this cube (cubes[5]) is the cube that will be used to move people from one zone to another.
@@ -85,10 +98,11 @@ namespace Dontpanic
 			cubes [5].ButtonEvent += OnCancelMoveClick;
 			cubes[5].NeighborRemoveEvent += OnMovePeopleDetach;
 			cubes [5].FillScreen (new Color(100,100,0)); // adding a bg color
-			cubes [5].Image ("DPBump", 0, 0, 0, language * 128, 128, 128, 0, 0);
+			cubes [5].Image (moveIdle, 0, 0, 0, language * 128, 128, 128, 0, 0);
 			cubes [5].Paint ();
 		
 			scli = new SClient ();
+			gameContainer = scli.getGameInfo ();
     	}
 
 
@@ -102,9 +116,13 @@ namespace Dontpanic
 
 			if (scli.isReady() && frame >= 20) {
 				frame = 0;
-
+				//the next integer are to make sure the wrongmoveimage and pushtoupdate are removed if the next turn has been called
+				int curactiveplayer = gameContainer.activePlayer;
 				gameContainer = scli.getGameInfo ();
-
+				if (curactiveplayer != gameContainer.activePlayer){
+					cubeHandler.activeplayerwrongmove = false;
+					cubeHandler.activeplayerismoving = false;
+				}
 				if(gameContainer.getTimer() < 10){
 					if(!timer10sec.IsPlaying){
 						timer10sec.Play (1);
@@ -257,6 +275,61 @@ namespace Dontpanic
 
 		}
 
+		/**
+		 * method to figure out if a move from node "currentnode" to node "node" is allowed
+		 */ 
+		public bool isMoveAllowed(int node, int currentnode){
+			switch (currentnode){
+			case 0:
+				if(node == 1 || node == 2 || node == 7){
+					return true;
+				}
+				break;
+			case 1:
+				if(node == 0 || node == 2 || node == 3){
+					return true;
+				}
+				break;
+			case 2:
+				if (node == 0 || node == 1 || node == 3 || node == 7) {
+					return true;
+				}
+				break;
+			case 3:
+				if(node == 1 || node == 2 || node == 6 || node == 8){
+					return true;
+				}
+				break;
+			case 4:
+				if (node == 8 || node == 5){
+					return true;
+				}
+				break;
+			case 5:
+				if (node == 4 || node == 6 || node == 7) {
+					return true;
+				}
+				break;
+			case 6:
+				if( node == 3 || node == 5 || node == 7 || node == 8){
+					return true;
+				}
+				break;
+			case 7:
+				if(node == 0 || node == 2 || node == 6 || node == 5){
+					return true;
+				}
+				break;
+			case 8:
+				if(node == 3 || node == 4 || node == 6){
+					return true;
+				}
+				break;
+			}
+			return false;
+
+		}
+
 
 		/**
 		 * event called when a player coube is pressed
@@ -274,9 +347,21 @@ namespace Dontpanic
 
 
 				int node = c.Tilt [0] * 3 + c.Tilt [1];
-				scli.move(gameContainer.getActivePlayer(), node);
-				if(!movePlayer.IsPlaying){
-					movePlayer.Play (100f,1);
+				int currentnode = gameContainer.getPlayer (gameContainer.activePlayer).getNodeid ();
+
+				if(node != currentnode){// do nothing and let it repaint if there is no intention to move
+
+					if(gameContainer.actionsLeft > 0 && isMoveAllowed(node , currentnode)){ // the move requested is possible
+						scli.move(gameContainer.getActivePlayer(), node);
+						if(!movePlayer.IsPlaying){
+							movePlayer.Play (100f,1);
+
+						}
+					}
+					else { // the requested move is impossible
+						c.Image (wrongmove, 0, 0, 0, language, 128, 128, 0, 0);
+						cubeHandler.activeplayerwrongmove = true;
+					}
 				}
 			}	
 		}
@@ -292,7 +377,7 @@ namespace Dontpanic
 				cubeHandler.fzone = -1;
 
 				c.FillScreen (new Color(100,100,0));
-				c.Image ("DPBump", 0, 0, 0, language * 128, 128, 128, 0, 0);
+				c.Image (moveIdle, 0, 0, 0, language * 128, 128, 128, 0, 0);
 				c.Paint ();
 			}
 
@@ -330,7 +415,7 @@ namespace Dontpanic
 
 				if(gameContainer.getActionsLeft() > 0){
 					
-					cube1.Image ("DPPanic", 0, 0, 0, language * 128, 128, 128, 0, 0);
+					cube1.Image (decpanicConnect, 0, 0, 0, language * 128, 128, 128, 0, 0);
 					typer.printText (cube1, "" + removed , 90, 80);
 					typer.printText (cube1, "" +  previouspanic, 50, 40);
 					cube1.Paint ();
@@ -358,7 +443,7 @@ namespace Dontpanic
 
 			c.FillScreen(new Color(255,100,100));
 			
-			c.Image ("faceDP", 0, 0, 0, 0, 128, 128, 0, 0);
+			c.Image (decpanicPush, 0, 0, 0, 0, 128, 128, 0, 0);
 			c.Paint ();
 			if(!decPanic.IsPlaying){
 				decPanic.Play (100f, 1);
@@ -375,7 +460,7 @@ namespace Dontpanic
 		public void OnDecreasePanicDetach(Cube cube1, Cube.Side side1, Cube cube2, Cube.Side side2)  {
 			connectedZonePanic = -1;
 			cube1.FillScreen(new Color(255,100,100));
-			cube1.Image ("DPPanic2", 0, 0, 0, language * 128, 128, 128, 0, 0);
+			cube1.Image (decpanicDetach, 0, 0, 0, language * 128, 128, 128, 0, 0);
 			cube1.Paint ();
 			cube1.ClearEvents ();
 			cube1.NeighborAddEvent += OnDecreasePanicConnect;
@@ -419,7 +504,7 @@ namespace Dontpanic
 						//typer.printText (cube1, "" + zone, 20, 20);
 						//typer.printText (cube1, "" + (eachmove * cubeHandler.amount), 20, 40);
 						
-						cube1.Image ("movePeople", 0, 0, 0, 0, 128, 128, 0, 0);
+						cube1.Image (moveConnect, 0, 0, 0, 0, 128, 128, 0, 0);
 						cube1.Paint ();
 					}
 
@@ -433,7 +518,7 @@ namespace Dontpanic
 					cubeHandler.amount = 0;
 					cubeHandler.fzone = -1;
 					cube1.FillScreen(new Color(100,100,0));
-					cube1.Image ("movePeople", 0, 0, 0, 0, 128, 128, 0, 0);
+					cube1.Image (moveConnect, 0, 0, 0, 0, 128, 128, 0, 0);
 					cube1.Paint ();
 
 					if (!movePeople.IsPlaying) {
@@ -453,14 +538,14 @@ namespace Dontpanic
 				
 				cube1.FillScreen (new Color(100,100,0));
 
-				cube1.Image ("DPBump2", 0, 0, 0, language *128, 128, 128, 0, 0);
+				cube1.Image (moveDetach, 0, 0, 0, language *128, 128, 128, 0, 0);
 				cube1.Paint ();
 
 
 			} else {
 				cube1.FillScreen (new Color(100,100,0));
 
-				cube1.Image ("DPBump", 0, 0, 0, language*128, 128, 128, 0, 0);
+				cube1.Image (moveIdle, 0, 0, 0, language*128, 128, 128, 0, 0);
 				cube1.Paint ();
 			}
 
@@ -472,7 +557,10 @@ namespace Dontpanic
 		public void TiltEvent(Cube c, int x, int y, int z){
 			//the cube has bee tilted and needs to be pressed to update
 			if(c.Equals(cubes[gameContainer.getActivePlayer()])){
+				c.FillScreen (new Color(255,255,255));
+				c.Image (pushtoupdate, 0, 0, 0, language, 128, 128, 0, 0);
 				cubeHandler.activeplayerismoving = true;
+				cubeHandler.activeplayerwrongmove = false;
 			}
 		}
 
