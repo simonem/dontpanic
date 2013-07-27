@@ -6,26 +6,28 @@ from service.lcdservice import LcdService
 from service.printerservice import Printer
 global socketIO
 
-
-
+# Insert DP server address
 socketIO = SocketIO('dp-server.local', 8008)
 
 global game_template
 game_template = {}
+
 def starting_game(template):
+	# Hw initialization
+	# Printer
 	global printed
 	printed = []
 	global printer
 	printer = Printer()
+	# LCD
 	global lcdscreen
 	lcdscreen = LcdService()
+	# Buttons and LEDs
 	global button
 	button = RPiButton(call_next_turn, use_this_card, remove_action)
 
-	global game_template
-		
+	global game_template		
 	game_template = json.loads(template)
-	
 	
 	for player in game_template['players']:
 		printer.print_playercard((player['id'] + 1), player['role'])
@@ -55,15 +57,11 @@ def get_cards_from_player(playerid):
 
 
 def get_cardinfo(cardid):
-
     print get_cards_from_player(get_active_player())[cardid]['desc']
         
         
 def get_actions_left():
-    
     return game_template['players'][get_active_player()]['actions_left']
-
-
        
 def print_lcd_info(self):
 	active_player = self.get_active_player()
@@ -81,33 +79,34 @@ def print_lcd_info(self):
         
 def on_response():
 	global socketIO
-	print 'connected to the server'
+	print 'DEBUG: connected to the server'
 	socketIO.emit('python_join_game') 
 	return None
 
 
 def call_next_turn():
-    print 'telling server end turn'
+    print 'DEBUG: telling server next turn'
     endturncommand = { 'type':'end_turn'} 
     socketIO.emit('game_command', json.dumps(endturncommand))
 
 def remove_action():
-    print 'removing one action'
+    print 'DEBUG: removing one action'
     gamecommand = {
 	"type":"decrease_actions"
     }
     socketIO.emit('game_command', json.dumps(gamecommand))
+
 def use_this_card(cardid):
-    print 'got a cardid', cardid
+    print 'DEBUG: using a cardid', cardid
     gamecommand = {
 	"type":"use_card",
 	"card":cardid
     }
     socketIO.emit('game_command', json.dumps(gamecommand))
     return None
-def got_message(msg):
-        
-    print 'server said', msg
+
+def got_message(msg):        
+    print 'DEBUG: server said', msg
 
 
 def change(arg):
@@ -134,6 +133,7 @@ def change(arg):
 							printer.print_infocard(player['info_cards'][i], player['cardsid'][i], (player['id']+1))
 							printed.append(player['cardsid'][i])
 					button.updateList(player['cardsid'])
+					
     if(changes.has_key('players')):
         for player in changes['players']:
 	    if(player != None):
@@ -141,11 +141,13 @@ def change(arg):
 			for i in range(len(game_template['players'])):
 				if(player['id'] == game_template['players'][i]['id']):
 					game_template['players'][i] = player
+					
     if(changes.has_key('zones')):
         print 'has zones'
             
     if(changes.has_key('nodes')):
         print 'has nodes'
+
     if(changes.has_key('options')):
         print 'has options'
             
@@ -157,27 +159,24 @@ def change(arg):
 	if(changes['win']):
 		print 'game is won'
 		lcdscreen.game_is_won()
-    if(changes.has_key('lose')):
-          
+		
+    if(changes.has_key('lose')):         
         if(changes['lose']):
             print 'game is lost'
 	    lcdscreen.game_is_lost()
+	
     active_player = game_template['active_player']
     turn = game_template['turn']
     actions_left = game_template['players'][active_player]['actions_left']
     lcdscreen.updateLCD(active_player + 1,turn,actions_left,timer)
+
 def got_error(arg):
     print 'got an error here'
     print arg
 
-    
 socketIO.on('is_connected', on_response)
-
 socketIO.on('change', change)
-
 socketIO.on('start_game', starting_game)
-
 socketIO.on('msg', got_message)
-
 socketIO.on('error', got_error)
 socketIO.wait(seconds=120000)

@@ -22,6 +22,7 @@ class RPiButton:
 	GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 	GPIO.add_event_detect(18, GPIO.RISING, callback=self.get_button_pressed, bouncetime=5000)
 	GPIO.add_event_detect(4, GPIO.RISING, callback=self.start_read_barcode, bouncetime=5000)
+	
     def get_button_pressed(self, channel):
 		global next_turn_function
 		print 'DEBUG: Next turn button pressed'
