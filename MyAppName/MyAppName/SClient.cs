@@ -25,7 +25,7 @@ namespace Dontpanic
 			Log.Debug("Connecting....");
 
 			//server ipadress
-			tcpclnt.Connect ("192.168.0.199", 6969);
+			tcpclnt.Connect ("dp-server.local", 6969);
 
 			Log.Debug("Connected");
 			ready = true;

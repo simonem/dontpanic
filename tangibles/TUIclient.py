@@ -8,7 +8,7 @@ global socketIO
 
 
 
-socketIO = SocketIO('192.168.0.199', 8008)
+socketIO = SocketIO('dp-server.local', 8008)
 
 global game_template
 game_template = {}
