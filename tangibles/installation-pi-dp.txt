@@ -1,0 +1,61 @@
+# Installing Bonjur
+$ sudo apt-get install netatalk
+$ sudo apt-get install avahi-daemon
+$ sudo update-rc.d avahi-daemon defaults
+$ sudo nano /etc/avahi/services/afpd.service
+		<?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+		    <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+		    <service-group>
+		       <name replace-wildcards="yes">%h</name>
+		       <service>
+		          <type>_afpovertcp._tcp</type>
+		          <port>548</port>
+		       </service>
+		    </service-group>
+ $ sudo /etc/init.d/avahi-daemon restart
+
+## Installing python tools (required for TUIClient.py)
+sudo apt-get install python-dev
+curl -O http://python-distribute.org/distribute_setup.py
+sudo python distribute_setup.py
+curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+sudo python get-pip.py
+sudo pip install virtualenv
+
+## Installing LCD Packages
+
+$ sudo apt-get install python-dev
+$ sudo apt-get install python-setuptools 
+$ sudo easy_install -U distribute
+$ sudo apt-get install python-pip
+$ sudo pip install rpi.gpio
+
+$ apt-get install git
+git clone git://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code.git 
+$ cd Adafruit-Raspberry-Pi-Python-Code
+$ cd Adafruit_CharLCD
+$ chmod +x Adafruit_CharLCD.py 
+$ sudo ./Adafruit_CharLCD.py
+
+## Installing Printer Packages
+
+$ sudo apt-get install python-serial python-imaging python-unidecode
+$ sudo nano /boot/cmdline.txt
+		Change:
+		dwc_otg.lpm_enable=0 console=ttyAMA0,115200 kgdboc=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait
+		to:
+		dwc_otg.lpm_enable=0 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait
+		(Basically, delete the references to ttyAMA0)
+		
+$ sudo nano /etc/inittab
+		Comment out or delete the last line. i.e. change this:
+		# T0:23:respawn:/sbin/getty -L ttyAMA0 115200 vt100
+REBOOT
+
+## installing webcam
+
+sudo apt-get install zbar-tools
+
+
+		
+		
